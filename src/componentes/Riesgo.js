@@ -1,5 +1,5 @@
 
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 
 class Riesgo extends Component {
@@ -14,20 +14,15 @@ class Riesgo extends Component {
     render() {
         const { riesgo, proceso, descripcion } = this.state;
       return (
-    
 <div>
-<Row>
-  <Col  md={4} lg={4} >{riesgo}</Col>
-  <Col  md={4} lg={4} >{proceso}</Col>
-  <Col md={4} lg={4} >{descripcion}</Col>
-</Row>
-
+    <Row>
+        <Col  md={4} lg={4} >{riesgo}</Col>
+         <Col  md={4} lg={4} >{proceso}</Col>
+         <Col md={4} lg={4} >{descripcion}</Col>
+    </Row>
 </div>
-    
-
       );
     }
   }
-  
   export default Riesgo;
   
