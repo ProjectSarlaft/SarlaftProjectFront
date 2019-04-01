@@ -1,4 +1,3 @@
-
 import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 
