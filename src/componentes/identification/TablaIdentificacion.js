@@ -13,7 +13,6 @@ class TablaIdentificacion extends Component {
     }
  
     render() {
-      console.log(this.state);  
       return (
         <div>
           {strToComponents(this.state.informacion)}
@@ -31,7 +30,8 @@ class TablaIdentificacion extends Component {
                         riesgo = {row.riesgo} 
                         proceso = {row.proceso}
                         descripcion = {row.descripcion}
-                        key = {row.riesgo} />
+                        key = {row.riesgo}
+                        editable = {row.editable} />
                 </Col>
                 <Col md={4} lg={4} >
                     <RiesgosAsociados 
@@ -39,7 +39,8 @@ class TablaIdentificacion extends Component {
                         riesgoOperativo = {row.riesgoOperativo} 
                         riesgoContagio = {row.riesgoContagio} 
                         riesgoReputacional = {row.riesgoReputacional}
-                        key = {row.riesgo} />
+                        key = {row.riesgo} 
+                        editable = {row.editable} />
                 </Col>
                 <Col md={4} lg={4} >
                     <FactoresRiesgo 
@@ -47,7 +48,8 @@ class TablaIdentificacion extends Component {
                         riesgoProductos = {row.riesgoProductos}
                         riesgoDistribucion = {row.riesgoDistribucion}
                         riesgoJurisdiccion = {row.riesgoJurisdiccion}
-                        key = {row.riesgo} />
+                        key = {row.riesgo}
+                        editable = {row.editable} />
                 </Col>                     
           </Row>)
     ));
