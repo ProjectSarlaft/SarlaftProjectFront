@@ -9,9 +9,11 @@ class Riesgo extends Component {
             riesgo: props.riesgo,
             proceso: props.proceso,
             descripcion: props.descripcion,
+            id: props.id,
             isReadOnly: props.isReadOnly,
+            onChangeRow: props.onChangeRow,
         }
-        console.log(this.state);
+        console.log(this.id);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -25,18 +27,24 @@ class Riesgo extends Component {
         
       }
 
+      shouldComponentUpdate(nextProps, nextState){
+        return (this.props.riesgo !== nextProps.riesgo);
+    }
+
     render() {
-        const { riesgo, proceso, descripcion, isReadOnly } = this.state;
+        const { onChangeRow, id, riesgo, proceso, descripcion, isReadOnly } = this.state;
         console.log(this.state)
+        
       return (
-        <Row>
+          
+        <Row >
             <Col md={4} lg={4}  >
                 <input 
                     className="cell"
-                    type="text"
-                    name="riesgo"
+                    name = "riesgo"
+                    id = {id}
                     value={riesgo}
-                    onChange={this.handleChange}
+                    onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </input>
             </Col>

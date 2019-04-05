@@ -14,7 +14,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = { 
-      tablaIdentificacion: new Array(crearFila),
+      tablaIdentificacion: [crearFila],
     }
   }
   render() {
@@ -52,6 +52,8 @@ class App extends Component {
   adicionarFila = () => {
     const { tablaIdentificacion } = this.state;
     this.setState(state => {
+      debugger
+      const crearF = crearFila;
       state.tablaIdentificacion.unshift(crearFila);
       return {
         tablaIdentificacion

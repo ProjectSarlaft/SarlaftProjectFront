@@ -10,19 +10,46 @@ class TablaIdentificacion extends Component {
         this.state = {
             informacion: props.informacion
         }
+        this.handleChange = this.handleChange.bind(this);
     }
+
+    handleChange(event) {
+      const {id, name, value} = event.target;
+      
+      this.setState(prevState => {
+        const informacion = this.state.informacion;
+        informacion[id][name] = value;
+        return {informacion}
+      });
+      
+      
+      
+      /* this.setState(prevState => {
+        debugger
+        const informacion = prevState.informacion.slice();
+        informacion[id][name] = value;
+        return {informacion}
+      });*/ 
+      
+      //this.setState({
+       // informacion
+     // })
+      console.log("this is the id");
+      console.log(id, name, value);
+    };
  
     render() {
+      console.log(this)
       return (
         <div>
-          {strToComponents(this.state.informacion)}
+          {strToComponents(this.state.informacion, this.handleChange)}
         </div>
           );
         }
       }
 
-      const strToComponents = (information) => (
-        information.map( (row) => 
+      const strToComponents = (informacion, handler) => (
+        informacion.map( (row, index) => 
             (
             <Row>
                 <Col md={3} lg={3}>
@@ -30,8 +57,10 @@ class TablaIdentificacion extends Component {
                         riesgo = {row.riesgo} 
                         proceso = {row.proceso}
                         descripcion = {row.descripcion}
-                        key = {row.riesgo}
-                        isReadOnly = {row.isReadOnly} />
+                        id = {index}
+                        key = {index + row.riesgo}                    
+                        isReadOnly = {row.isReadOnly}
+                        onChangeRow = {handler} />
                 </Col>
                 <Col md={4} lg={4} >
                     <RiesgosAsociados 
@@ -39,7 +68,7 @@ class TablaIdentificacion extends Component {
                         riesgoOperativo = {row.riesgoOperativo} 
                         riesgoContagio = {row.riesgoContagio} 
                         riesgoReputacional = {row.riesgoReputacional}
-                        key = {row.riesgo} 
+                        key = {row.riesgo + "sisas"} 
                         editable = {row.editable} />
                 </Col>
                 <Col md={4} lg={4} >

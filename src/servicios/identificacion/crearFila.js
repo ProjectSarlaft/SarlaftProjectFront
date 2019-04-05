@@ -1,4 +1,9 @@
-const crearFile = {
+function crearFila() {
+  debugger
+  return Object.create(tablaIdentificacion);
+  };
+
+  const tablaIdentificacion = {
     riesgo: "",
     descripcion: "",
     proceso: "",
@@ -11,6 +16,6 @@ const crearFile = {
     riesgoDistribucion: "",
     riesgoJurisdiccion: "",
     isReadOnly: false,
-  };
+  }
   
-export default crearFile;
+export default crearFila;
