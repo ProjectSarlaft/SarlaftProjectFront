@@ -10,7 +10,7 @@ const crearFile = {
     riesgoProductos: "",
     riesgoDistribucion: "",
     riesgoJurisdiccion: "",
-    editable: "",
+    isReadOnly: false,
   };
   
 export default crearFile;

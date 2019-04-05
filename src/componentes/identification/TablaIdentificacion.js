@@ -31,7 +31,7 @@ class TablaIdentificacion extends Component {
                         proceso = {row.proceso}
                         descripcion = {row.descripcion}
                         key = {row.riesgo}
-                        editable = {row.editable} />
+                        isReadOnly = {row.isReadOnly} />
                 </Col>
                 <Col md={4} lg={4} >
                     <RiesgosAsociados 

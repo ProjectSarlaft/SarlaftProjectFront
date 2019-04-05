@@ -9,21 +9,63 @@ class Riesgo extends Component {
             riesgo: props.riesgo,
             proceso: props.proceso,
             descripcion: props.descripcion,
-            editable: props.editable
+            isReadOnly: props.isReadOnly,
         }
+        console.log(this.state);
+        this.handleChange = this.handleChange.bind(this);
     }
+
+    handleChange(event) {
+        const {value, name} = event.target;
+            this.setState({
+              [name]: value
+            });
+        
+        console.log(event.target.value);
+        
+      }
+
     render() {
-        const { riesgo, proceso, descripcion, editable } = this.state;
+        const { riesgo, proceso, descripcion, isReadOnly } = this.state;
+        console.log(this.state)
       return (
-<div>
-    <Row>
-        <Col  md={4} lg={4} className="cell" contenteditable={editable}>{riesgo}</Col>
-        <Col  md={4} lg={4} className="cell" contenteditable={editable}>{proceso}</Col>
-        <Col  md={4} lg={4} className="cell" contenteditable={editable}>{descripcion}</Col>
-    </Row>
-</div>
+        <Row>
+            <Col md={4} lg={4}  >
+                <input 
+                    className="cell"
+                    type="text"
+                    name="riesgo"
+                    value={riesgo}
+                    onChange={this.handleChange}
+                    readOnly={isReadOnly}>
+                </input>
+            </Col>
+            <Col  md={4} lg={4} >
+                <input 
+                    className="cell" 
+                    type="text"
+                    name = "proceso"
+                    value={proceso}
+                    onChange={this.handleChange}
+                    readOnly={isReadOnly}>
+                </input>
+            </Col> 
+            <Col  md={4} lg={4} > 
+                <input 
+                    className="cell" 
+                    type="text"
+                    name="descripcion"   
+                    value={descripcion}   
+                    onChange={this.handleChange}
+                    readOnly={isReadOnly} >
+                </input>
+            </Col>
+        </Row>
       );
     }
   }
+
+
+  
   export default Riesgo;
   

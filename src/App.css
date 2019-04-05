@@ -1,12 +1,10 @@
 .body {
-    position: absolute;
     left: 100px;
     right: 150px;
-    margin: 100px;
+    
 }
 
 .cell{
-    display:table-cell;
-    border: 1px dotted blueviolet;
-    height: 50px;
+    border: 1px solid black;
+    height: 40px;
 }

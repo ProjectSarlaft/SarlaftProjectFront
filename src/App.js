@@ -57,6 +57,7 @@ class App extends Component {
         tablaIdentificacion
       }
     });
+    console.log(this.state);
   }
 }
 

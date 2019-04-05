@@ -20,7 +20,8 @@ class TablaIdentificacionHeader extends Component {
                 <Riesgo
                     riesgo = "Riesgo" 
                     proceso = "Proceso"
-                    descripcion = "Descripcion"/>
+                    descripcion = "Descripcion"
+                    isReadOnly = {true}/>
             </Col>
             <Col md={4} lg={4} >
                 <RiesgosAsociados
