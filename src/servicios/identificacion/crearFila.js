@@ -1,9 +1,4 @@
-function crearFila() {
-  debugger
-  return Object.create(tablaIdentificacion);
-  };
-
-  const tablaIdentificacion = {
+ const crearFila = {
     riesgo: "",
     descripcion: "",
     proceso: "",

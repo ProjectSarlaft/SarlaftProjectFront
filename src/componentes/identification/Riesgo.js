@@ -13,28 +13,10 @@ class Riesgo extends Component {
             isReadOnly: props.isReadOnly,
             onChangeRow: props.onChangeRow,
         }
-        console.log(this.id);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {
-        const {value, name} = event.target;
-            this.setState({
-              [name]: value
-            });
-        
-        console.log(event.target.value);
-        
-      }
-
-      shouldComponentUpdate(nextProps, nextState){
-        return (this.props.riesgo !== nextProps.riesgo);
     }
 
     render() {
         const { onChangeRow, id, riesgo, proceso, descripcion, isReadOnly } = this.state;
-        console.log(this.state)
-        
       return (
           
         <Row >
@@ -51,21 +33,21 @@ class Riesgo extends Component {
             <Col  md={4} lg={4} >
                 <input 
                     className="cell" 
-                    type="text"
                     name = "proceso"
+                    id = {id}
                     value={proceso}
-                    onChange={this.handleChange}
+                    onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </input>
             </Col> 
             <Col  md={4} lg={4} > 
                 <input 
                     className="cell" 
-                    type="text"
-                    name="descripcion"   
+                    name = "descripcion"
+                    id = {id}
                     value={descripcion}   
-                    onChange={this.handleChange}
-                    readOnly={isReadOnly} >
+                    onChange={onChangeRow}
+                    readOnly={isReadOnly}>
                 </input>
             </Col>
         </Row>

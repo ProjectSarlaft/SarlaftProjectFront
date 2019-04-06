@@ -8,41 +8,21 @@ class TablaIdentificacion extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            informacion: props.informacion
+            informacion: props.informacion,
+            actualizarInformacionHandler : props.actualizarInformacionHandler,
         }
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(event) {
-      const {id, name, value} = event.target;
-      
-      this.setState(prevState => {
-        const informacion = this.state.informacion;
-        informacion[id][name] = value;
-        return {informacion}
-      });
-      
-      
-      
-      /* this.setState(prevState => {
-        debugger
-        const informacion = prevState.informacion.slice();
-        informacion[id][name] = value;
-        return {informacion}
-      });*/ 
-      
-      //this.setState({
-       // informacion
-     // })
-      console.log("this is the id");
-      console.log(id, name, value);
+      this.state.actualizarInformacionHandler(event);
     };
  
     render() {
-      console.log(this)
+      const {informacion} = this.props;
       return (
         <div>
-          {strToComponents(this.state.informacion, this.handleChange)}
+          {strToComponents(informacion, this.handleChange)}
         </div>
           );
         }
@@ -58,7 +38,7 @@ class TablaIdentificacion extends Component {
                         proceso = {row.proceso}
                         descripcion = {row.descripcion}
                         id = {index}
-                        key = {index + row.riesgo}                    
+                        key = {index + row.riesgo + row.proceso + row.descripcion}                    
                         isReadOnly = {row.isReadOnly}
                         onChangeRow = {handler} />
                 </Col>

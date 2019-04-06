@@ -16,7 +16,32 @@ class App extends Component {
     this.state = { 
       tablaIdentificacion: [crearFila],
     }
+
+    this.adicionarFila = this.adicionarFila.bind(this);
+    this.actualizarInformacion = this.actualizarInformacion.bind(this);
   }
+
+  actualizarInformacion(event) {
+      const {id, name, value} = event.target;
+      this.setState(prevState => {
+        const tablaIdentificacion = prevState.tablaIdentificacion.map((row, j) => {
+          if(j+"" === id) {
+            return {...row, [name]: value};
+          } else {
+            return row;
+          }
+        });
+        return {tablaIdentificacion}
+      });
+  }
+  
+  adicionarFila() {
+    this.setState({
+      tablaIdentificacion: this.state.tablaIdentificacion.concat(crearFila),
+    });
+    console.log(this.state)
+  }
+  
   render() {
     const { tablaIdentificacion } = this.state;
     return (
@@ -27,7 +52,7 @@ class App extends Component {
             <Typography  lg={3} variant='title' color='inherit'>
               Sarlaft
             </Typography>
-            <Fab color="secondary" aria-label="Add" className="body" onClick={() => { this.adicionarFila()}} >
+            <Fab color="secondary" aria-label="Add" className="body" onClick={this.adicionarFila} >
               <AddIcon />
             </Fab>
           </Toolbar>
@@ -41,28 +66,14 @@ class App extends Component {
       <Row>
         <Col md={12} lg={12}>
           <div>
-            <TablaIdentificacion informacion = {tablaIdentificacion} ></TablaIdentificacion>
+            <TablaIdentificacion informacion = {tablaIdentificacion} actualizarInformacionHandler={this.actualizarInformacion}></TablaIdentificacion>
           </div>
         </Col>
       </Row>
     </Grid>
     );
   }
-  
-  adicionarFila = () => {
-    const { tablaIdentificacion } = this.state;
-    this.setState(state => {
-      debugger
-      const crearF = crearFila;
-      state.tablaIdentificacion.unshift(crearFila);
-      return {
-        tablaIdentificacion
-      }
-    });
-    console.log(this.state);
-  }
 }
-
 
 export default App;
 
