@@ -38,7 +38,7 @@ class TablaIdentificacion extends Component {
                         proceso = {row.proceso}
                         descripcion = {row.descripcion}
                         id = {index}
-                        key = {index + row.riesgo + row.proceso + row.descripcion}                    
+                        key = {index}                    
                         isReadOnly = {row.isReadOnly}
                         onChangeRow = {handler} />
                 </Col>
@@ -48,8 +48,10 @@ class TablaIdentificacion extends Component {
                         riesgoOperativo = {row.riesgoOperativo} 
                         riesgoContagio = {row.riesgoContagio} 
                         riesgoReputacional = {row.riesgoReputacional}
-                        key = {row.riesgo + "sisas"} 
-                        editable = {row.editable} />
+                        id = {index}
+                        key = {index}                    
+                        isReadOnly = {row.isReadOnly}
+                        onChangeRow = {handler} />
                 </Col>
                 <Col md={4} lg={4} >
                     <FactoresRiesgo 
@@ -57,8 +59,10 @@ class TablaIdentificacion extends Component {
                         riesgoProductos = {row.riesgoProductos}
                         riesgoDistribucion = {row.riesgoDistribucion}
                         riesgoJurisdiccion = {row.riesgoJurisdiccion}
-                        key = {row.riesgo}
-                        editable = {row.editable} />
+                        id = {index}
+                        key = {index}                    
+                        isReadOnly = {row.isReadOnly}
+                        onChangeRow = {handler} />
                 </Col>                     
           </Row>)
     ));

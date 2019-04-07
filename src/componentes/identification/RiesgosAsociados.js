@@ -10,18 +10,56 @@ class RiesgosAsociados extends Component {
             riesgoOperativo: props.riesgoOperativo,
             riesgoContagio: props.riesgoContagio,
             riesgoReputacional: props.riesgoReputacional,
-            editable: props.editable,
+            isReadOnly: props.isReadOnly,
+            onChangeRow: props.onChangeRow,
+            id: props.id,
         }
     }
     render() {
-      const { riesgoLegal, riesgoOperativo, riesgoContagio, riesgoReputacional, editable } = this.state;
+      const { riesgoLegal, riesgoOperativo, riesgoContagio, riesgoReputacional, isReadOnly, id, onChangeRow } = this.state;
       return (
         <div>
             <Row>
-                <Col md={3} lg={3} className="cell" contenteditable={editable}>{riesgoLegal}</Col>
-                <Col md={3} lg={3} className="cell" contenteditable={editable}>{riesgoOperativo}</Col>
-                <Col md={3} lg={3} className="cell" contenteditable={editable}>{riesgoContagio}</Col>
-                <Col md={3} lg={3} className="cell" contenteditable={editable}>{riesgoReputacional}</Col>
+                <Col md={3} lg={3} >
+                  <input 
+                    className="cell"
+                    name = "riesgoLegal"
+                    id = {id}
+                    defaultValue={riesgoLegal}
+                    onChange={onChangeRow}
+                    readOnly={isReadOnly}>
+                  </input>
+                </Col>
+                <Col md={3} lg={3} >
+                  <input 
+                    className="cell"
+                    name = "riesgoOperativo"
+                    id = {id}
+                    defaultValue={riesgoOperativo}
+                    onChange={onChangeRow}
+                    readOnly={isReadOnly}>
+                  </input>
+                </Col>
+                <Col md={3} lg={3} >
+                  <input 
+                    className="cell"
+                    name = "riesgoReputacional"
+                    id = {id}
+                    defaultValue={riesgoReputacional}
+                    onChange={onChangeRow}
+                    readOnly={isReadOnly}>
+                  </input>
+                </Col>
+                <Col md={3} lg={3} >
+                  <input 
+                    className="cell"
+                    name = "riesgoContagio"
+                    id = {id}
+                    defaultValue={riesgoContagio}
+                    onChange={onChangeRow}
+                    readOnly={isReadOnly}>
+                  </input>
+                </Col>
             </Row>
         </div>
           );

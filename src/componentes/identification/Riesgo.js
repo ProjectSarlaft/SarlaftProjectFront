@@ -25,7 +25,7 @@ class Riesgo extends Component {
                     className="cell"
                     name = "riesgo"
                     id = {id}
-                    value={riesgo}
+                    defaultValue={riesgo}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </input>
@@ -35,7 +35,7 @@ class Riesgo extends Component {
                     className="cell" 
                     name = "proceso"
                     id = {id}
-                    value={proceso}
+                    defaultValue={proceso}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </input>
@@ -45,7 +45,7 @@ class Riesgo extends Component {
                     className="cell" 
                     name = "descripcion"
                     id = {id}
-                    value={descripcion}   
+                    defaultValue={descripcion}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </input>

@@ -15,6 +15,7 @@ class App extends Component {
     super();
     this.state = { 
       tablaIdentificacion: [crearFila],
+      nuevaFilaIdentificacion: [crearFila],
     }
 
     this.adicionarFila = this.adicionarFila.bind(this);
@@ -24,14 +25,14 @@ class App extends Component {
   actualizarInformacion(event) {
       const {id, name, value} = event.target;
       this.setState(prevState => {
-        const tablaIdentificacion = prevState.tablaIdentificacion.map((row, j) => {
+        const nuevaFilaIdentificacion = prevState.nuevaFilaIdentificacion.map((row, j) => {
           if(j+"" === id) {
             return {...row, [name]: value};
           } else {
             return row;
           }
         });
-        return {tablaIdentificacion}
+        return {nuevaFilaIdentificacion}
       });
   }
   
