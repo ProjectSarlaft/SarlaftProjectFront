@@ -1,0 +1,10 @@
+.body {
+    left: 100px;
+    right: 150px;
+    
+}
+
+.cell{
+    border: 1px solid black;
+    height: 40px;
+}
