@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import Riesgo from './Riesgo';
 import RiesgosAsociados from './RiesgosAsociados';
 import FactoresRiesgo from './FactoresRiesgo';
+import EditarYBorrarEventos from './EditarYBorrarEventos';
+
 
 class TablaIdentificacion extends Component {
     constructor(props) {
@@ -32,7 +34,7 @@ class TablaIdentificacion extends Component {
         informacion.map( (row, index) => 
             (
             <Row>
-                <Col md={3} lg={3}>
+                <Col md={4} lg={4}>
                     <Riesgo 
                         riesgo = {row.riesgo} 
                         proceso = {row.proceso}
@@ -42,7 +44,7 @@ class TablaIdentificacion extends Component {
                         isReadOnly = {row.isReadOnly}
                         onChangeRow = {handler} />
                 </Col>
-                <Col md={4} lg={4} >
+                <Col md={3} lg={3} >
                     <RiesgosAsociados 
                         riesgoLegal ={row.riesgoLegal} 
                         riesgoOperativo = {row.riesgoOperativo} 
@@ -53,7 +55,7 @@ class TablaIdentificacion extends Component {
                         isReadOnly = {row.isReadOnly}
                         onChangeRow = {handler} />
                 </Col>
-                <Col md={4} lg={4} >
+                <Col md={3} lg={3} >
                     <FactoresRiesgo 
                         riesgoCliente = {row.riesgoCliente}
                         riesgoProductos = {row.riesgoProductos}
@@ -63,7 +65,10 @@ class TablaIdentificacion extends Component {
                         key = {index}                    
                         isReadOnly = {row.isReadOnly}
                         onChangeRow = {handler} />
-                </Col>                     
+                </Col>   
+                <Col md={2} lg={2}>
+                  <EditarYBorrarEventos></EditarYBorrarEventos>
+                </Col>                  
           </Row>)
     ));
       export default TablaIdentificacion;
