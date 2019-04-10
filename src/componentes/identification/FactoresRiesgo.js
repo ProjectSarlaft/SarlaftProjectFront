@@ -1,5 +1,7 @@
 import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import './../../App.css'
 
 class FactoresRiesgo extends Component {
@@ -21,44 +23,66 @@ class FactoresRiesgo extends Component {
         <div>
             <Row>
               <Col  md={3} lg={3} > 
-                <input 
-                    className="cell" 
+                
+                <FormControlLabel
+                control ={
+                <Switch
                     name = "riesgoCliente"
                     id = {id}
                     defaultValue={riesgoCliente}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </input>
+                </Switch>
+                }
+                label="Cliente"
+                labelPlacement="bottom"
+              />
               </Col>
               <Col  md={3} lg={3} > 
-                <input 
-                    className="cell" 
+                <FormControlLabel
+                control ={
+                 <Switch 
+                    
                     name = "riesgoProductos"
                     id = {id}
                     defaultValue={riesgoProductos}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </input>
+                </Switch>
+                }
+                label="Productos"
+                labelPlacement="bottom"
+              />
               </Col>
               <Col  md={3} lg={3} > 
-                <input 
-                    className="cell" 
+                <FormControlLabel 
+                 control = {
+                <Switch
                     name = "riesgoDistribucion"
                     id = {id}
                     defaultValue={riesgoDistribucion}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </input>
+                </Switch>
+                 }
+                 label="Distribucion"
+                 labelPlacement="bottom"
+               />
               </Col>
+              
               <Col md={3} lg={3} > 
-                <input 
-                    className="cell" 
+              <FormControlLabel
+                control={
+                <Switch 
                     name = "riesgoJurisdiccion"
                     id = {id}
-                    defaultValue={riesgoJurisdiccion}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </input>
+                </Switch>
+              }
+                label="Jurisdiccion"
+                labelPlacement="bottom"
+              />
               </Col>
             </Row>
         </div>

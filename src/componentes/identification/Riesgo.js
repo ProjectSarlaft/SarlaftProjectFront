@@ -1,5 +1,6 @@
 import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
+import Input from '@material-ui/core/Input';
 import './../../App.css'
 
 class Riesgo extends Component {
@@ -20,35 +21,32 @@ class Riesgo extends Component {
       return (
           
         <Row >
-            <Col md={4} lg={4}  >
-                <input 
-                    className="cell"
+            <Col md={3} lg={3}  >
+                <Input 
                     name = "riesgo"
                     id = {id}
                     defaultValue={riesgo}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </input>
+                </Input>
             </Col>
-            <Col  md={4} lg={4} >
-                <input 
-                    className="cell" 
+            <Col  md={3} lg={3} >
+                <Input 
                     name = "proceso"
                     id = {id}
                     defaultValue={proceso}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </input>
+                </Input>
             </Col> 
-            <Col  md={4} lg={4} > 
-                <input 
-                    className="cell" 
+            <Col  md={6} lg={6} > 
+                <Input 
                     name = "descripcion"
                     id = {id}
                     defaultValue={descripcion}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </input>
+                </Input>
             </Col>
         </Row>
       );
