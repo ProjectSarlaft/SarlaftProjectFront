@@ -1,7 +1,7 @@
 import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 import './../../App.css'
-import { FormControlLabel, Switch } from '@material-ui/core';
+import { FormControlLabel, Checkbox } from '@material-ui/core';
 
 class RiesgosAsociados extends Component {
     constructor(props) {
@@ -20,32 +20,33 @@ class RiesgosAsociados extends Component {
       const { riesgoLegal, riesgoOperativo, riesgoContagio, riesgoReputacional, isReadOnly, id, onChangeRow } = this.state;
       return (
         <div>
-            <Row>
+            <Row class="rowContent">
                 <Col md={3} lg={3} >
                   <FormControlLabel
                   control = {
-                  <Switch
+                  <Checkbox
                     name = "riesgoLegal"
                     id = {id}
                     defaultValue={riesgoLegal}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                  </Switch>
+                  </Checkbox>
                   }
                   label="Legal"
                   labelPlacement="bottom"
+                  class="formControllLabel"
                 />
                 </Col>
                 <Col md={3} lg={3} >
                   <FormControlLabel
                   control = {
-                  <Switch
+                  <Checkbox
                     name = "riesgoOperativo"
                     id = {id}
                     defaultValue={riesgoOperativo}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                  </Switch>
+                  </Checkbox>
                   }
                   label="Operativo"
                   labelPlacement="bottom"
@@ -54,13 +55,13 @@ class RiesgosAsociados extends Component {
                 <Col md={3} lg={3} >
                   <FormControlLabel 
                   control = {
-                  <Switch
+                  <Checkbox
                     name = "riesgoReputacional"
                     id = {id}
                     defaultValue={riesgoReputacional}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                 </Switch>
+                 </Checkbox>
                   }
                   label="Reputacional"
                   labelPlacement="bottom"
@@ -69,13 +70,13 @@ class RiesgosAsociados extends Component {
                 <Col md={3} lg={3} >
                   <FormControlLabel 
                   control ={
-                  <Switch
+                  <Checkbox
                     name = "riesgoContagio"
                     id = {id}
                     defaultValue={riesgoContagio}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                  </Switch>
+                  </Checkbox>
                   }
                   label="Contagio"
                   labelPlacement="bottom"
