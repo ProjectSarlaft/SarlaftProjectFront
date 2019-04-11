@@ -7,7 +7,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import './../../App.css'
 
-class EditarYBorrarEventos extends Component {
+class EventosTablaIdentificacion extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,5 +42,5 @@ class EditarYBorrarEventos extends Component {
 
 
   
-  export default EditarYBorrarEventos;
+  export default EventosTablaIdentificacion;
   

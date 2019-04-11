@@ -1,7 +1,6 @@
 import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import './../../App.css'
 import { Checkbox } from '@material-ui/core';
 
@@ -45,7 +44,7 @@ class FactoresRiesgo extends Component {
                  <Checkbox 
                     name = "riesgoProductos"
                     id = {id}
-                    defaultValue={riesgoProductos}   
+                    defaultValue={riesgoProductos}  
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </Checkbox>
@@ -76,6 +75,7 @@ class FactoresRiesgo extends Component {
                 <Checkbox 
                     name = "riesgoJurisdiccion"
                     id = {id}
+                    defaultValue={riesgoJurisdiccion}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </Checkbox>

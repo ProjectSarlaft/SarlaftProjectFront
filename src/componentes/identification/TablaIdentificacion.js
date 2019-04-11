@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Riesgo from './Riesgo';
 import RiesgosAsociados from './RiesgosAsociados';
 import FactoresRiesgo from './FactoresRiesgo';
-import EditarYBorrarEventos from './EditarYBorrarEventos';
+import EventosTablaIdentificacion from './EventosTablaIdentificacion';
 
 
 class TablaIdentificacion extends Component {
@@ -67,7 +67,7 @@ class TablaIdentificacion extends Component {
                         onChangeRow = {handler} />
                 </Col>   
                 <Col md={2} lg={2}>
-                  <EditarYBorrarEventos></EditarYBorrarEventos>
+                  <EventosTablaIdentificacion></EventosTablaIdentificacion>
                 </Col>                  
           </Row>)
     ));

@@ -20,7 +20,7 @@ class RiesgosAsociados extends Component {
       const { riesgoLegal, riesgoOperativo, riesgoContagio, riesgoReputacional, isReadOnly, id, onChangeRow } = this.state;
       return (
         <div>
-            <Row class="rowContent">
+            <Row className="rowContent">
                 <Col md={3} lg={3} >
                   <FormControlLabel
                   control = {
@@ -34,7 +34,7 @@ class RiesgosAsociados extends Component {
                   }
                   label="Legal"
                   labelPlacement="bottom"
-                  class="formControllLabel"
+                  className="formControllLabel"
                 />
                 </Col>
                 <Col md={3} lg={3} >
