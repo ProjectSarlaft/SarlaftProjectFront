@@ -11,22 +11,25 @@ class EventosTablaIdentificacion extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            riesgo: props.riesgo,
-            proceso: props.proceso,
-            descripcion: props.descripcion,
-            id: props.id,
-            isReadOnly: props.isReadOnly,
-            onChangeRow: props.onChangeRow,
+          eventHandler: props.eventHandler,
+          id: props.id,
         }
     }
 
     render() {
-        const { onChangeRow, id, riesgo, proceso, descripcion, isReadOnly } = this.state;
+        const { id, eventHandler } = this.state;
       return (
           
         <Row >
             <Col md={3} lg={3}  >
-            <IconButton aria-label="Delete" class="distancia" size="small">
+            <IconButton 
+              aria-label="Delete" 
+              class="distancia" 
+              size="small" 
+              onClick={eventHandler}
+              name = "delete"
+              id = {id}
+              >
                  <DeleteIcon  />
             </IconButton>
             </Col>

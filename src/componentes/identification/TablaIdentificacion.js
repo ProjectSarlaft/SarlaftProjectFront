@@ -12,25 +12,31 @@ class TablaIdentificacion extends Component {
         this.state = {
             informacion: props.informacion,
             actualizarInformacionHandler : props.actualizarInformacionHandler,
+            eventoInformacionHandler: props.eventoInformacionHandler,
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleEvent = this.handleEvent.bind(this);
     }
 
     handleChange(event) {
       this.state.actualizarInformacionHandler(event);
     };
+
+    handleEvent(event) {
+      this.state.eventoInformacionHandler(event);
+    }
  
     render() {
       const {informacion} = this.props;
       return (
         <div>
-          {strToComponents(informacion, this.handleChange)}
+          {strToComponents(informacion, this.handleChange, this.handleEvent)}
         </div>
           );
         }
       }
 
-      const strToComponents = (informacion, handler) => (
+      const strToComponents = (informacion, handlerChange, handlerEvent) => (
         informacion.map( (row, index) => 
             (
             <Row>
@@ -42,7 +48,7 @@ class TablaIdentificacion extends Component {
                         id = {index}
                         key = {index}                    
                         isReadOnly = {row.isReadOnly}
-                        onChangeRow = {handler} />
+                        onChangeRow = {handlerChange} />
                 </Col>
                 <Col md={3} lg={3} >
                     <RiesgosAsociados 
@@ -53,7 +59,7 @@ class TablaIdentificacion extends Component {
                         id = {index}
                         key = {index}                    
                         isReadOnly = {row.isReadOnly}
-                        onChangeRow = {handler} />
+                        onChangeRow = {handlerChange} />
                 </Col>
                 <Col md={3} lg={3} >
                     <FactoresRiesgo 
@@ -64,10 +70,14 @@ class TablaIdentificacion extends Component {
                         id = {index}
                         key = {index}                    
                         isReadOnly = {row.isReadOnly}
-                        onChangeRow = {handler} />
+                        onChangeRow = {handlerChange} />
                 </Col>   
                 <Col md={2} lg={2}>
-                  <EventosTablaIdentificacion></EventosTablaIdentificacion>
+                  <EventosTablaIdentificacion
+                    eventHandler={handlerEvent}
+                    id = {index}
+                    key = {index}                    
+                  ></EventosTablaIdentificacion>
                 </Col>                  
           </Row>)
     ));

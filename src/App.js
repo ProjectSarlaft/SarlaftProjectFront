@@ -10,6 +10,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import crearFila from './servicios/identificacion/crearFila.js'
 import validacionFilaIdentificacion from './servicios/identificacion/validacionFilaIdentificacion.js'
+import cambiarEstadoReadOnly from './servicios/identificacion/cambiarEstadoReadOnly.js'
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
@@ -38,6 +39,7 @@ class App extends Component {
 
     this.adicionarFila = this.adicionarFila.bind(this);
     this.actualizarInformacion = this.actualizarInformacion.bind(this);
+    this.eventoTableInformacion = this.eventoTableInformacion.bind(this);
   }
 
   handleClick = event => {
@@ -75,6 +77,8 @@ class App extends Component {
     const camposFaltantes = validacionFilaIdentificacion(nuevaFilaIdentificacion[indiceActual]);
     if(camposFaltantes.length === 0) {
       //Actualizar Estado por que todos los campos requeridos han sido llenados.
+      debugger
+      nuevaFilaIdentificacion[indiceActual].isReadOnly = true;
       this.setState({
         tablaIdentificacion: this.state.nuevaFilaIdentificacion.concat(crearFila),
         nuevaFilaIdentificacion: this.state.nuevaFilaIdentificacion.concat(crearFila),  
@@ -82,7 +86,6 @@ class App extends Component {
       });
       // PENDIENTE Crear metodo para añadir esta columnuna en la BD
     } else {
-      //Hay almenos un campo requerido que no se ha llenado
       // Mandar Alerta
       var textoAlerta = "Los siguientes campos deben ser llenanos";
       for (var index = 0; index < camposFaltantes.length ; index ++) {
@@ -93,6 +96,15 @@ class App extends Component {
         mensajeAlerta: textoAlerta,
       })
     }
+  }
+
+  eventoTableInformacion(event) {
+    const {nuevaFilaIdentificacion} = this.state;
+    debugger;
+    nuevaFilaIdentificacion.splice(event.target.id, 1);
+    console.log(event.target.name);
+    console.log(event.target.id);
+
   }
   
   render() {
@@ -142,7 +154,10 @@ class App extends Component {
       <Row>
         <Col md={12} lg={12}>
           <div>
-            <TablaIdentificacion informacion = {tablaIdentificacion} actualizarInformacionHandler={this.actualizarInformacion}></TablaIdentificacion>
+            <TablaIdentificacion informacion = {tablaIdentificacion} 
+                                 actualizarInformacionHandler={this.actualizarInformacion} 
+                                 eventoInformacionHandler={this.eventoTableInformacion}>
+            </TablaIdentificacion>
           </div>
         </Col>
       </Row>
