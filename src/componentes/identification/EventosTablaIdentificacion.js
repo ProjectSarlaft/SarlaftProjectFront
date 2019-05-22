@@ -1,10 +1,8 @@
 import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
-import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
 import './../../App.css'
 
 class EventosTablaIdentificacion extends Component {
@@ -34,7 +32,14 @@ class EventosTablaIdentificacion extends Component {
             </IconButton>
             </Col>
             <Col  md={3} lg={3} >
-            <IconButton class="distancia" size="small">
+            <IconButton 
+              aria-label="Edit" 
+              class="distancia" 
+              size="small"
+              onClick={eventHandler}
+              name = "edit"
+              id = {id}
+              >
                  <EditIcon />
             </IconButton>
             </Col> 

@@ -33,6 +33,7 @@ class App extends Component {
       nuevaFilaIdentificacion: [crearFila],
       alerta: false,
       mensajeAlerta: "",
+      respuestaAlerta: false,
       indiceActual: 0,
       anchorEl: null,
     }
@@ -77,7 +78,6 @@ class App extends Component {
     const camposFaltantes = validacionFilaIdentificacion(nuevaFilaIdentificacion[indiceActual]);
     if(camposFaltantes.length === 0) {
       //Actualizar Estado por que todos los campos requeridos han sido llenados.
-      debugger
       nuevaFilaIdentificacion[indiceActual].isReadOnly = true;
       this.setState({
         tablaIdentificacion: this.state.nuevaFilaIdentificacion.concat(crearFila),
@@ -101,12 +101,25 @@ class App extends Component {
   eventoTableInformacion(event) {
     const {nuevaFilaIdentificacion} = this.state;
     debugger;
+    const tipoEvento = event.target.name;
+    const indiceFila = event.target.id;
+    if (tipoEvento === "delete") {
+      //logica para borrar una fila 
+      this.setState({
+        tablaIdentificacion: this.state.tablaIdentificacion.splice(1, indiceFila),
+        nuevaFilaIdentificacion: this.state.nuevaFilaIdentificacion.splice(1, indiceFila),  
+        indiceActual:  this.state.indiceActual - 1,
+      });
+    } else if (tipoEvento === "edit ") {
+      //Logica para editar una fila. -> Not define
+
+    }
     nuevaFilaIdentificacion.splice(event.target.id, 1);
     console.log(event.target.name);
     console.log(event.target.id);
 
   }
-  
+
   render() {
     const { tablaIdentificacion } = this.state;
     const { anchorEl } = this.state;
@@ -161,7 +174,10 @@ class App extends Component {
           </div>
         </Col>
       </Row>
-      <AdicionFilaAlerta open={this.state.alerta} text={this.state.mensajeAlerta}></AdicionFilaAlerta>
+      <AdicionFilaAlerta 
+        open={this.state.alerta} 
+        text={this.state.mensajeAlerta}
+      ></AdicionFilaAlerta>
     </Grid>
     );
   }

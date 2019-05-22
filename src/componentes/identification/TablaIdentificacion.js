@@ -23,6 +23,7 @@ class TablaIdentificacion extends Component {
     };
 
     handleEvent(event) {
+      debugger
       this.state.eventoInformacionHandler(event);
     }
  
