@@ -28,6 +28,7 @@ class TablaIdentificacion extends Component {
     }
  
     render() {
+      debugger
       const {informacion} = this.props;
       return (
         <div>

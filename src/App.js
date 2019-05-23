@@ -75,10 +75,9 @@ class App extends Component {
   adicionarFila() {
     // Validar que la fila actual tenga todos los datos necesarios.
     const {nuevaFilaIdentificacion, indiceActual} = this.state;
-    const camposFaltantes = validacionFilaIdentificacion(nuevaFilaIdentificacion[indiceActual]);
+    const camposFaltantes = validacionFilaIdentificacion(nuevaFilaIdentificacion, indiceActual);
     if(camposFaltantes.length === 0) {
       //Actualizar Estado por que todos los campos requeridos han sido llenados.
-      nuevaFilaIdentificacion[indiceActual].isReadOnly = true;
       this.setState({
         tablaIdentificacion: this.state.nuevaFilaIdentificacion.concat(crearFila),
         nuevaFilaIdentificacion: this.state.nuevaFilaIdentificacion.concat(crearFila),  
@@ -99,30 +98,28 @@ class App extends Component {
   }
 
   eventoTableInformacion(event) {
-    const {nuevaFilaIdentificacion} = this.state;
+    const {nuevaFilaIdentificacion: filaIdentificacionActualizada} = this.state;
     debugger;
     const tipoEvento = event.target.name;
     const indiceFila = event.target.id;
+    
     if (tipoEvento === "delete") {
       //logica para borrar una fila 
+      filaIdentificacionActualizada.splice(indiceFila,1);
       this.setState({
-        tablaIdentificacion: this.state.tablaIdentificacion.splice(1, indiceFila),
-        nuevaFilaIdentificacion: this.state.nuevaFilaIdentificacion.splice(1, indiceFila),  
+        tablaIdentificacion: filaIdentificacionActualizada,
+        nuevaFilaIdentificacion: filaIdentificacionActualizada,
         indiceActual:  this.state.indiceActual - 1,
       });
     } else if (tipoEvento === "edit ") {
       //Logica para editar una fila. -> Not define
 
     }
-    nuevaFilaIdentificacion.splice(event.target.id, 1);
-    console.log(event.target.name);
-    console.log(event.target.id);
-
   }
 
   render() {
-    const { tablaIdentificacion } = this.state;
-    const { anchorEl } = this.state;
+    const { tablaIdentificacion, anchorEl } = this.state;
+    debugger
     const open = Boolean(anchorEl);
     return (
     <Grid>

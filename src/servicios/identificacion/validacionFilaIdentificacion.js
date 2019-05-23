@@ -1,6 +1,13 @@
-const validacionFilaIdentificacion = (filaIdentification) => {
+const validacionFilaIdentificacion = (tablaIdentificacion, indice) => {
+
+    const filaIdentification = tablaIdentificacion[indice];
     const camposFaltantes=[];
-    
+
+    debugger;
+
+    if (tablaIdentificacion.length === 0) {
+        return camposFaltantes;
+    }
     // Campo Riesgo es Requerido
     if(filaIdentification.riesgo === "") {
         camposFaltantes.push("Riesgo");
@@ -34,6 +41,6 @@ const validacionFilaIdentificacion = (filaIdentification) => {
         }
 
     return camposFaltantes;
-}
+    }
 
 export default validacionFilaIdentificacion;
