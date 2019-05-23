@@ -1,8 +1,8 @@
 import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import './../../App.css'
+import { Checkbox } from '@material-ui/core';
 
 class FactoresRiesgo extends Component {
     constructor(props) {
@@ -26,13 +26,13 @@ class FactoresRiesgo extends Component {
                 
                 <FormControlLabel
                 control ={
-                <Switch
+                <Checkbox
                     name = "riesgoCliente"
                     id = {id}
                     defaultValue={riesgoCliente}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </Switch>
+                </Checkbox>
                 }
                 label="Cliente"
                 labelPlacement="bottom"
@@ -41,14 +41,13 @@ class FactoresRiesgo extends Component {
               <Col  md={3} lg={3} > 
                 <FormControlLabel
                 control ={
-                 <Switch 
-                    
+                 <Checkbox 
                     name = "riesgoProductos"
                     id = {id}
-                    defaultValue={riesgoProductos}   
+                    defaultValue={riesgoProductos}  
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </Switch>
+                </Checkbox>
                 }
                 label="Productos"
                 labelPlacement="bottom"
@@ -57,13 +56,13 @@ class FactoresRiesgo extends Component {
               <Col  md={3} lg={3} > 
                 <FormControlLabel 
                  control = {
-                <Switch
+                <Checkbox
                     name = "riesgoDistribucion"
                     id = {id}
                     defaultValue={riesgoDistribucion}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </Switch>
+                </Checkbox>
                  }
                  label="Distribucion"
                  labelPlacement="bottom"
@@ -73,12 +72,13 @@ class FactoresRiesgo extends Component {
               <Col md={3} lg={3} > 
               <FormControlLabel
                 control={
-                <Switch 
+                <Checkbox 
                     name = "riesgoJurisdiccion"
                     id = {id}
+                    defaultValue={riesgoJurisdiccion}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
-                </Switch>
+                </Checkbox>
               }
                 label="Jurisdiccion"
                 labelPlacement="bottom"

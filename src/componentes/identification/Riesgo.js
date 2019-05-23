@@ -17,6 +17,7 @@ class Riesgo extends Component {
     }
 
     render() {
+        debugger
         const { onChangeRow, id, riesgo, proceso, descripcion, isReadOnly } = this.state;
       return (
           

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Riesgo from './Riesgo';
 import RiesgosAsociados from './RiesgosAsociados';
 import FactoresRiesgo from './FactoresRiesgo';
-import EditarYBorrarEventos from './EditarYBorrarEventos';
+import EventosTablaIdentificacion from './EventosTablaIdentificacion';
 
 
 class TablaIdentificacion extends Component {
@@ -12,25 +12,33 @@ class TablaIdentificacion extends Component {
         this.state = {
             informacion: props.informacion,
             actualizarInformacionHandler : props.actualizarInformacionHandler,
+            eventoInformacionHandler: props.eventoInformacionHandler,
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleEvent = this.handleEvent.bind(this);
     }
 
     handleChange(event) {
       this.state.actualizarInformacionHandler(event);
     };
+
+    handleEvent(event) {
+      debugger
+      this.state.eventoInformacionHandler(event);
+    }
  
     render() {
+      debugger
       const {informacion} = this.props;
       return (
         <div>
-          {strToComponents(informacion, this.handleChange)}
+          {strToComponents(informacion, this.handleChange, this.handleEvent)}
         </div>
           );
         }
       }
 
-      const strToComponents = (informacion, handler) => (
+      const strToComponents = (informacion, handlerChange, handlerEvent) => (
         informacion.map( (row, index) => 
             (
             <Row>
@@ -42,7 +50,7 @@ class TablaIdentificacion extends Component {
                         id = {index}
                         key = {index}                    
                         isReadOnly = {row.isReadOnly}
-                        onChangeRow = {handler} />
+                        onChangeRow = {handlerChange} />
                 </Col>
                 <Col md={3} lg={3} >
                     <RiesgosAsociados 
@@ -53,7 +61,7 @@ class TablaIdentificacion extends Component {
                         id = {index}
                         key = {index}                    
                         isReadOnly = {row.isReadOnly}
-                        onChangeRow = {handler} />
+                        onChangeRow = {handlerChange} />
                 </Col>
                 <Col md={3} lg={3} >
                     <FactoresRiesgo 
@@ -64,10 +72,14 @@ class TablaIdentificacion extends Component {
                         id = {index}
                         key = {index}                    
                         isReadOnly = {row.isReadOnly}
-                        onChangeRow = {handler} />
+                        onChangeRow = {handlerChange} />
                 </Col>   
                 <Col md={2} lg={2}>
-                  <EditarYBorrarEventos></EditarYBorrarEventos>
+                  <EventosTablaIdentificacion
+                    eventHandler={handlerEvent}
+                    id = {index}
+                    key = {index}                    
+                  ></EventosTablaIdentificacion>
                 </Col>                  
           </Row>)
     ));
