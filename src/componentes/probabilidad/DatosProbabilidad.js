@@ -3,20 +3,20 @@ import React, { Component } from 'react';
 import './../../App.css'
 import { Input } from '@material-ui/core';
 
-class DatosImpacto extends Component {
+class DatosProbabilidad extends Component {
     constructor(props) {
         super(props);
         this.state = {
             escala: props.escala,
             nivel: props.nivel,
-            afectacionEconomica: props.afectacionEconomica,
+            posibilidadAnual: props.posibilidadAnual,
             onChangeRow: props.onChangeRow,
             id: props.id,
         }
     }
     render() {
       const isReadOnly = false;
-      const { escala, nivel, afectacionEconomica, id, onChangeRow } = this.state;
+      const { escala, nivel, posibilidadAnual, id, onChangeRow } = this.state;
       return (
         <div>
             <Row className="rowContent">
@@ -32,18 +32,18 @@ class DatosImpacto extends Component {
                 <Col md={2} lg={2} >
                   <Input
                     name = "nivel"
-                    type = "number"
                     id = {id}
                     defaultValue={nivel}
+                    type = "number"
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                   </Input>
                 </Col>
                 <Col md={8} lg={8} >
                   <Input
-                    name = "afectacionEconomica"
+                    name = "posibilidadAnual"
                     id = {id}
-                    defaultValue={afectacionEconomica}
+                    defaultValue={posibilidadAnual}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                   </Input>
@@ -53,4 +53,4 @@ class DatosImpacto extends Component {
           );
         }
       }
-      export default DatosImpacto;
+      export default DatosProbabilidad;
