@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import TablaProbabilidad from './componentes/probabilidad/TablaProbabilidad';
 import './App.css';
 
 const options = [
@@ -164,10 +165,9 @@ class App extends Component {
       <Row>
         <Col md={12} lg={12}>
           <div>
-            <TablaIdentificacion informacion = {tablaIdentificacion} 
-                                 actualizarInformacionHandler={this.actualizarInformacion} 
-                                 eventoInformacionHandler={this.eventoTableInformacion}>
-            </TablaIdentificacion>
+            <TablaProbabilidad>
+
+            </TablaProbabilidad>
           </div>
         </Col>
       </Row>
