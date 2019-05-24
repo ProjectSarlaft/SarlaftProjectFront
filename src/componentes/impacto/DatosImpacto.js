@@ -32,6 +32,7 @@ class DatosImpacto extends Component {
                 <Col md={2} lg={2} >
                   <Input
                     name = "nivel"
+                    type = "number"
                     id = {id}
                     defaultValue={nivel}
                     onChange={onChangeRow}

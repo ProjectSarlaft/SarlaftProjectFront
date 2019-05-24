@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './../../App.css'
 import { Input } from '@material-ui/core';
 
-class DatosImpacto extends Component {
+class DatosProbabilidad extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,6 +34,7 @@ class DatosImpacto extends Component {
                     name = "nivel"
                     id = {id}
                     defaultValue={nivel}
+                    type = "number"
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                   </Input>
@@ -52,4 +53,4 @@ class DatosImpacto extends Component {
           );
         }
       }
-      export default DatosImpacto;
+      export default DatosProbabilidad;
