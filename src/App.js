@@ -24,10 +24,6 @@ class App extends Component {
   constructor() {
     super();
     this.state = { 
-      alerta: false,
-      mensajeAlerta: "",
-      respuestaAlerta: false,
-      indiceActual: 0,
       anchorEl: null,
     }
   }
@@ -85,14 +81,14 @@ class App extends Component {
         <Col md={12} lg={12}>
           <div>
 
-          <TablaIdentificacion>
-          </TablaIdentificacion>
+          {/*<TablaIdentificacion>
+          </TablaIdentificacion>*/}
 
-            {/*<TablaProbabilidad>
-            </TablaProbabilidad> */}
+            <TablaProbabilidad>
+            </TablaProbabilidad> 
 
-             {/*<TablaImpactos>
-            </TablaImpactos>*/}
+             <TablaImpactos>
+            </TablaImpactos>
           </div>
         </Col>
       </Row>

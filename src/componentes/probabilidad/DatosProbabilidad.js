@@ -34,7 +34,7 @@ class DatosProbabilidad extends Component {
                     name = "nivel"
                     id = {id}
                     defaultValue={nivel}
-                    type = "number"
+                    type="number"
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                   </Input>

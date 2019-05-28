@@ -1,3 +1,5 @@
+import validarDatoNumerico from '../transversales/validarDatoNumerico';
+
 const validacionTablaImpacto = (tablaImpacto) => {
     const camposFaltantes= [];
     tablaImpacto.map((fila) => {
@@ -6,9 +8,7 @@ const validacionTablaImpacto = (tablaImpacto) => {
             camposFaltantes.push("Escala")
         }
 
-        if(fila.nivel === "") {
-            camposFaltantes.push("Nivel")
-        }
+        validarDatoNumerico(fila.nivel, camposFaltantes);
 
         if(fila.afectacionEconomica === "") {
             camposFaltantes.push("Afectacion Economica")
