@@ -81,14 +81,14 @@ class App extends Component {
         <Col md={12} lg={12}>
           <div>
 
-          {/*<TablaIdentificacion>
-          </TablaIdentificacion>*/}
+          <TablaIdentificacion>
+          </TablaIdentificacion>
 
-            <TablaProbabilidad>
+          {/*  <TablaProbabilidad>
             </TablaProbabilidad> 
 
              <TablaImpactos>
-            </TablaImpactos>
+            </TablaImpactos>*/}
           </div>
         </Col>
       </Row>

@@ -28,6 +28,7 @@ class TablaIdentificacion extends Component {
 
     actualizarInformacion(event) {
       //this.state.actualizarInformacionHandler(event);
+      debugger
       const {id, name, value, checked} = event.target;
       const finalValue = value === "" ? checked : value; // Si el value es "" quiere decir que se actualizo un checkbox, por lo tanto retornaremos el checkbox.
       this.setState(prevState => {
@@ -134,7 +135,7 @@ class TablaIdentificacion extends Component {
                         proceso = {row.proceso}
                         descripcion = {row.descripcion}
                         id = {index}
-                        key = {index}                    
+                        key = {index + "riesgos"}                    
                         isReadOnly = {row.isReadOnly}
                         onChangeRow = {handlerChange} />
                 </Col>
@@ -145,7 +146,7 @@ class TablaIdentificacion extends Component {
                         riesgoContagio = {row.riesgoContagio} 
                         riesgoReputacional = {row.riesgoReputacional}
                         id = {index}
-                        key = {index}                    
+                        key = {index + "riesgoAsociado"}                       
                         isReadOnly = {row.isReadOnly}
                         onChangeRow = {handlerChange} />
                 </Col>
@@ -156,7 +157,7 @@ class TablaIdentificacion extends Component {
                         riesgoDistribucion = {row.riesgoDistribucion}
                         riesgoJurisdiccion = {row.riesgoJurisdiccion}
                         id = {index}
-                        key = {index}                    
+                        key = {index + "factoresRiesgo"}                                      
                         isReadOnly = {row.isReadOnly}
                         onChangeRow = {handlerChange} />
                 </Col>   

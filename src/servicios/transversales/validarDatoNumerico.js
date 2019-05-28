@@ -1,5 +1,4 @@
 const validarDatoNumerico = (numero, mensajeRetorno) => {
-    debugger
     if(numero === "") {
         mensajeRetorno.push("Nivel");
         return mensajeRetorno;

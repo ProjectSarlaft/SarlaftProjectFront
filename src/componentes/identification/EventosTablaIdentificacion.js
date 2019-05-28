@@ -22,7 +22,7 @@ class EventosTablaIdentificacion extends Component {
             <Col md={3} lg={3}  >
             <IconButton 
               aria-label="Delete" 
-              class="distancia" 
+              className="distancia" 
               size="small" 
               onClick={eventHandler}
               name = "delete"
@@ -34,7 +34,7 @@ class EventosTablaIdentificacion extends Component {
             <Col  md={3} lg={3} >
             <IconButton 
               aria-label="Edit" 
-              class="distancia" 
+              className="distancia" 
               size="small"
               onClick={eventHandler}
               name = "edit"
