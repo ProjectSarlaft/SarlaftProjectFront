@@ -5,7 +5,7 @@ const validarDatoNumerico = (numero, mensajeRetorno) => {
         return mensajeRetorno;
     }
 
-    if (Number.isInteger(numero)) {
+    if (numero.includes(",") || numero.includes(".")) {
         mensajeRetorno.push("Nivel debe ser Entero");
         return mensajeRetorno;
     }
