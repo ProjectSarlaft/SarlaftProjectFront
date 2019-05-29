@@ -135,7 +135,7 @@ class TablaIdentificacion extends Component {
         informacion.map( (row, index) => 
             (
             <Row>
-                <Col md={4} lg={4}>
+                <Col md={3} lg={3}>
                     <Riesgo 
                         riesgo = {row.riesgo} 
                         proceso = {row.proceso}
@@ -145,7 +145,7 @@ class TablaIdentificacion extends Component {
                         isReadOnly = {row.isReadOnly}
                         onChangeRow = {handlerChange} />
                 </Col>
-                <Col md={3} lg={3} >
+                <Col md={4} lg={4} >
                     <RiesgosAsociados 
                         riesgoLegal ={row.riesgoLegal} 
                         riesgoOperativo = {row.riesgoOperativo} 

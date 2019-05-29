@@ -7,28 +7,41 @@ class DatosImpacto extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            escala: props.escala,
-            nivel: props.nivel,
-            afectacionEconomica: props.afectacionEconomica,
-            riesgoLegal: props.riesgoLegal,
-            riesgoOperativo: props.riesgoOperativo,
-            riesgoContagio: props.riesgoContagio,
-            riesgoReputacional: props.riesgoReputacional,
+            escala: "",
+            nivel: "",
+            afectacionEconomica: "",
             onChangeRow: props.onChangeRow,
             id: props.id,
         }
     }
+
+    componentWillReceiveProps(nextProps) {
+    
+      if(nextProps.escala !== this.props.escala) {
+          this.setState({escala : nextProps.escala});
+      }
+
+      if(nextProps.nivel !== this.props.nivel) {
+          this.setState({nivel : nextProps.nivel});
+      }
+
+      if(nextProps.afectacionEconomica !== this.props.afectacionEconomica) {
+          this.setState({afectacionEconomica : nextProps.afectacionEconomica});
+      }
+  } 
+
     render() {
       const isReadOnly = false;
-      const { escala, nivel, afectacionEconomica, id, onChangeRow } = this.state;
+      const { id, onChangeRow } = this.state;
       return (
         <div>
             <Row>
                 <Col md={3} lg={3} >
                   <Input
                     name = "escala"
-                    id = {id}
-                    defaultValue={escala}
+                    key = {id + "escala"}
+                    id = {id+""}
+                    value={this.state.escala||''}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                   </Input>
@@ -36,9 +49,10 @@ class DatosImpacto extends Component {
                 <Col md={2} lg={2} >
                   <Input
                     name = "nivel"
+                    key = {id + "nivel"}
                     type = "number"
-                    id = {id}
-                    defaultValue={nivel}
+                    id = {id+""}
+                    value={this.state.nivel||''}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                   </Input>
@@ -46,8 +60,9 @@ class DatosImpacto extends Component {
                 <Col md={7} lg={7} >
                   <Input
                     name = "afectacionEconomica"
-                    id = {id}
-                    defaultValue={afectacionEconomica}
+                    key = {id + "afectacionEconomica"}
+                    id = {id+""}
+                    value={this.state.afectacionEconomica||''}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                   </Input>

@@ -9,7 +9,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 class AlertaTablaImpacto extends React.Component {
     constructor(props) {
         super(props);
-        debugger
         this.state = {
             open: this.props.open,
             text: this.props.text,
@@ -24,7 +23,6 @@ componentWillReceiveProps(nextProps) {
     }  
 
   shouldComponentUpdate(nextProps, nextState) {
-      debugger
     if (nextProps.text === "") {
         return false
     } else {
@@ -40,7 +38,6 @@ componentWillReceiveProps(nextProps) {
   };
 
   render() {
-      debugger
     const { text, open} = this.state; 
     return (
         <div>

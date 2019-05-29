@@ -2,33 +2,22 @@ import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 import './../../App.css'
 import { Input } from '@material-ui/core';
+import DatosProbabilidad from './headers/DatosProbabilidad';
 
 class HeaderTablaProbabilidad extends Component {
     render() {
-      const isReadOnly = true;
       return (
         <div>
-            <Row className="rowContent">
-                <Col md={1} lg={1} >
-                  <Input
-                    name = "escala"
-                    value="Escala"
-                    readOnly={isReadOnly}>
-                  </Input>
-                </Col>
-                <Col md={1} lg={1} >
-                  <Input
-                    name = "nivel"
-                    value="Nivel"
-                    readOnly={isReadOnly}>
-                  </Input>
-                </Col>
+            <Row >
                 <Col md={4} lg={4} >
+                  <DatosProbabilidad></DatosProbabilidad>
+                </Col>
+                <Col md={1} lg={1} >
                   <Input
-                    name = "posibilidadAnual"
-                    value="Posibilidad Anual"
-                    readOnly={isReadOnly}>
-                  </Input>
+                  name = "acciones"
+                  value="Acciones"
+                  readOnly={true}>
+              </Input>
                 </Col>
             </Row>
         </div>

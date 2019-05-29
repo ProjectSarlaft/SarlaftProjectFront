@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import DatosImpacto from './DatosImpacto';
 import RiesgosAsociados from './RiesgosAsociados';
 import crearFilaTablaImpacto from './../../servicios/impacto/crearFilaTablaImpacto';
-import crearHeadersTablaImpacto from './../../servicios/impacto/crearHeadersTablaImpacto';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaImpacto from './../../servicios/impacto/validacionTablaImpacto';
 import AlertaTablaImpacto from './AlertaTablaImpacto';
 import HeadersTablaImpactos from './HeadersTablaImpactos';
+import EventosTablaImpacto from './EventosTablaImpacto';
 
 class TablaImpactos extends Component {
     constructor(props) {
@@ -22,15 +22,11 @@ class TablaImpactos extends Component {
             mensajeAlerta: "",
         }
         
-        this.handleChange = this.handleChange.bind(this);
         this.adicionarFila = this.adicionarFila.bind(this);
         this.guardarInformacion = this.guardarInformacion.bind(this);
         this.actualizarInformacion = this.actualizarInformacion.bind(this);
+        this.handleEvento = this.handleEvento.bind(this);
     }
-
-    handleChange(event) {
-      this.state.actualizarInformacionHandler(event);
-    };
 
     adicionarFila() {
         const {informacion, indice} = this.state;
@@ -41,6 +37,29 @@ class TablaImpactos extends Component {
               }); 
         }
     };
+
+    handleEvento(event) {
+      const {informacion, indice} = this.state;
+      const tipoEvento = event.target.name;
+      const indiceFila = event.target.id;
+      debugger
+      if (tipoEvento === "delete") {
+        //logica para borrar una fila 
+        if (indice > 3) {
+          informacion.splice(indiceFila,1);
+          this.setState({
+            informacion: informacion,
+            indice:  this.state.indice - 1,
+          });
+        } else {
+          this.setState({
+            alerta: true,
+            mensajeAlerta: "El minimo de filas son 3",
+          })
+        }
+      }
+    }
+  
 
     guardarInformacion() {
         const {informacion} = this.state;
@@ -88,7 +107,7 @@ class TablaImpactos extends Component {
           {botonAgregar(this.adicionarFila, this.guardarInformacion)}  
           {validacionInfo(alerta, mensajeAlerta)}
           {crearHeaders()}
-          {strToComponents(informacion,this.actualizarInformacion)}
+          {strToComponents(informacion,this.actualizarInformacion, this.handleEvento)}
         </div>
           );
         }
@@ -112,11 +131,11 @@ class TablaImpactos extends Component {
             ></AlertaTablaImpacto>
       );
 
-      const  crearHeaders = (alerta, mensajeAlerta) => (
+      const  crearHeaders = () => (
         <HeadersTablaImpactos>></HeadersTablaImpactos>
    );
 
-      const strToComponents = (informacion, actualizarInformacionHandler) => (
+      const strToComponents = (informacion, actualizarInformacionHandler, handlerEvento) => (
         informacion.map( (row, index) => 
             (
             <Row>
@@ -138,6 +157,13 @@ class TablaImpactos extends Component {
                         onChangeRow = {actualizarInformacionHandler}
                         id = {index}
                         key = {index}/>
+                </Col>
+                <Col md={3} lg={3}>
+                    <EventosTablaImpacto
+                        eventHandler={handlerEvento}
+                        id = {index}
+                        key = {index}>                    
+                    </EventosTablaImpacto>
                 </Col>
           </Row>)
     ));

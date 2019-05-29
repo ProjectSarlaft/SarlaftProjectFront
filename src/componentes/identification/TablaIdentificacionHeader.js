@@ -17,13 +17,13 @@ class TablaIdentificacionHeader extends Component {
 
     const mostrarHeader = () => (
         <Row>
-            <Col md={4} lg={4}>
+            <Col md={3} lg={3}>
                 <Riesgo
                     riesgo = "Riesgo" 
                     proceso = "Proceso"
                     descripcion = "Descripcion"/>
             </Col>
-            <Col md={3} lg={3} >
+            <Col md={4} lg={4} >
                 <RiesgosAsociados
                     riesgoLegal ="R. Legal" 
                     riesgoOperativo = "R. Operativo" 
