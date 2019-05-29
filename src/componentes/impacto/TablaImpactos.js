@@ -158,7 +158,7 @@ class TablaImpactos extends Component {
                         id = {index}
                         key = {index}/>
                 </Col>
-                <Col md={3} lg={3}>
+                <Col md={1} lg={1}>
                     <EventosTablaImpacto
                         eventHandler={handlerEvento}
                         id = {index}

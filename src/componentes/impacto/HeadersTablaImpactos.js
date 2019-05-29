@@ -2,6 +2,7 @@ import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 import DatosImpacto from './headers/DatosImpacto';
 import RiesgosAsociados from './headers/RiesgosAsociados';
+import { Input } from '@material-ui/core';
 
 class HeadersTablaImpactos extends Component {
 
@@ -28,6 +29,13 @@ class HeadersTablaImpactos extends Component {
                         riesgoOperativo = "R. Operativo"
                         riesgoContagio = "R. Contagio"
                         riesgoReputacional = "R. Reputacional"/>
+                </Col>
+                <Col md={1} lg={1}>
+                    <Input
+                     name = "riesgoOperativo"
+                     value="Acciones"
+                     readOnly={true}>
+                  </Input>
                 </Col>
           </Row>
     );
