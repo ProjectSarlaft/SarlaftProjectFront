@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaImpacto from './../../servicios/impacto/validacionTablaImpacto';
 import AlertaTablaImpacto from './AlertaTablaImpacto';
+import HeadersTablaImpactos from './HeadersTablaImpactos';
 
 class TablaImpactos extends Component {
     constructor(props) {
@@ -82,12 +83,11 @@ class TablaImpactos extends Component {
 
     render() {
       const {informacion, alerta, mensajeAlerta} = this.state;
-      const headers = [crearHeadersTablaImpacto];
       return (
         <div>
           {botonAgregar(this.adicionarFila, this.guardarInformacion)}  
           {validacionInfo(alerta, mensajeAlerta)}
-          {strToComponents(headers, this.actualizarInformacion)}
+          {crearHeaders()}
           {strToComponents(informacion,this.actualizarInformacion)}
         </div>
           );
@@ -112,11 +112,15 @@ class TablaImpactos extends Component {
             ></AlertaTablaImpacto>
       );
 
+      const  crearHeaders = (alerta, mensajeAlerta) => (
+        <HeadersTablaImpactos>></HeadersTablaImpactos>
+   );
+
       const strToComponents = (informacion, actualizarInformacionHandler) => (
         informacion.map( (row, index) => 
             (
             <Row>
-                <Col md={6} lg={6} >
+                <Col md={3} lg={3} >
                     <DatosImpacto 
                         escala ={row.escala} 
                         nivel = {row.nivel} 

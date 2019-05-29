@@ -2,12 +2,12 @@ import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 import DatosProbabilidad from './DatosProbabilidad';
 import crearFilaTablaProbabilidad from '../../servicios/probabilidad/crearFilaTablaProbabilidad';
-import crearHeadersTablaProbabilidad from '../../servicios/probabilidad/crearHeadersTablaProbabilidad';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaProbabilidad from '../../servicios/probabilidad/validacionTablaProbabilidad';
 import AlertaTablaProbabilidad from './AlertaTablaProbabilidad';
+import HeaderTablaProbabilidad from './HeaderTablaProbabilidad';
 
 class TablaImpactos extends Component {
    constructor(props) {
@@ -83,12 +83,11 @@ class TablaImpactos extends Component {
 
    render() {
      const {informacion, alerta, mensajeAlerta} = this.state;
-     const headers = [crearHeadersTablaProbabilidad];
      return (
        <div>
          {botonAgregar(this.adicionarFila, this.guardarInformacion)} 
          {validacionInfo(alerta, mensajeAlerta)}
-         {strToComponents(headers, this.actualizarInformacion)}
+         {crearHeader()}
          {strToComponents(informacion,this.actualizarInformacion)}
        </div>
          );
@@ -112,6 +111,12 @@ class TablaImpactos extends Component {
                    text={mensajeAlerta}
            ></AlertaTablaProbabilidad>
      );
+
+     
+     const  crearHeader = () => (
+    
+          <HeaderTablaProbabilidad></HeaderTablaProbabilidad>
+    );
 
      const strToComponents = (informacion, actualizarInformacionHandler) => (
        informacion.map( (row, index) =>

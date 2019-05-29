@@ -9,6 +9,7 @@ import validacionFilaIdentificacion from '../../servicios/identificacion/validac
 import AdicionFilaAlerta from './AdicionFilaAlerta';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import TablaIdentificacionHeader from './TablaIdentificacionHeader';
 
 
 class TablaIdentificacion extends Component {
@@ -102,6 +103,7 @@ class TablaIdentificacion extends Component {
         <div>
          {botonAgregar(this.adicionarFila)} 
          {validacionInfo(alerta, mensajeAlerta)}
+         {crearHeadersTablaImpacto()}
          {strToComponents(informacion, this.actualizarInformacion, this.handleEvent)}
         </div>
           );
@@ -124,6 +126,10 @@ class TablaIdentificacion extends Component {
                  text={mensajeAlerta}
          ></AdicionFilaAlerta>
    );
+
+   const  crearHeadersTablaImpacto = (alerta, mensajeAlerta) => (
+    <TablaIdentificacionHeader></TablaIdentificacionHeader>
+);
 
       const strToComponents = (informacion, handlerChange, handlerEvent) => (
         informacion.map( (row, index) => 
