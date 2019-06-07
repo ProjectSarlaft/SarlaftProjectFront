@@ -7,25 +7,47 @@ class RiesgosAsociados extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            riesgoLegal: props.riesgoLegal,
-            riesgoOperativo: props.riesgoOperativo,
-            riesgoContagio: props.riesgoContagio,
-            riesgoReputacional: props.riesgoReputacional,
+            riesgoLegal: "",
+            riesgoOperativo: "",
+            riesgoContagio: "",
+            riesgoReputacional: "",
             isReadOnly: props.isReadOnly,
             onChangeRow: props.onChangeRow,
             id: props.id,
         }
     }
+
+    
+    componentWillReceiveProps(nextProps) {
+    
+      if(nextProps.riesgoLegal !== this.props.riesgoLegal) {
+          this.setState({riesgoLegal : nextProps.riesgoLegal});
+      }
+
+      if(nextProps.riesgoOperativo !== this.props.riesgoOperativo) {
+          this.setState({riesgoOperativo : nextProps.riesgoOperativo});
+      }
+
+      if(nextProps.riesgoContagio !== this.props.riesgoContagio) {
+          this.setState({riesgoContagio : nextProps.riesgoContagio});
+      }
+
+      if(nextProps.riesgoReputacional !== this.props.riesgoReputacional) {
+        this.setState({riesgoReputacional : nextProps.riesgoReputacional});
+    }
+  }  
+
     render() {
-      const { riesgoLegal, riesgoOperativo, riesgoContagio, riesgoReputacional, isReadOnly, id, onChangeRow } = this.state;
+      const {  isReadOnly, id, onChangeRow } = this.state;
       return (
         <div>
             <Row className="rowContent">
                 <Col md={3} lg={3} >
                   <Input
                     name = "riesgoLegal"
-                    id = {id}
-                    defaultValue={riesgoLegal}
+                    key = {id + "riesgoLegal"}
+                    id = {id+""}
+                    value={this.state.riesgoLegal}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                   </Input>
@@ -33,8 +55,9 @@ class RiesgosAsociados extends Component {
                 <Col md={3} lg={3} >
                   <Input
                      name = "riesgoOperativo"
-                     id = {id}
-                     defaultValue={riesgoOperativo}
+                     key = {id + "riesgoLegal"}
+                     id = {id+""}
+                     value={this.state.riesgoOperativo||''}
                      onChange={onChangeRow}
                      readOnly={isReadOnly}>
                   </Input>
@@ -42,8 +65,9 @@ class RiesgosAsociados extends Component {
                 <Col md={3} lg={3} >
                   <Input
                       name = "riesgoReputacional"
-                      id = {id}
-                      defaultValue={riesgoReputacional}
+                      key = {id + "riesgoLegal"}
+                      id = {id+""}
+                      value={this.state.riesgoReputacional||''}
                       onChange={onChangeRow}
                       readOnly={isReadOnly}>
                   </Input>
@@ -51,8 +75,9 @@ class RiesgosAsociados extends Component {
                 <Col md={3} lg={3} >
                   <Input
                      name = "riesgoContagio"
-                     id = {id}
-                     defaultValue={riesgoContagio}
+                     key = {id + "riesgoLegal"}
+                     id = {id+""}
+                     value={this.state.riesgoContagio||''}
                      onChange={onChangeRow}
                      readOnly={isReadOnly}>
                   </Input>

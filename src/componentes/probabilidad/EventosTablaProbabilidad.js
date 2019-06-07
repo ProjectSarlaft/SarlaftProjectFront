@@ -2,10 +2,9 @@ import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import './../../App.css'
 
-class EventosTablaIdentificacion extends Component {
+class EventosTablaProbabilidad extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,18 +30,6 @@ class EventosTablaIdentificacion extends Component {
                  <DeleteIcon  />
             </IconButton>
             </Col>
-            <Col  md={3} lg={3} >
-            <IconButton 
-              aria-label="Edit" 
-              className="distancia" 
-              size="small"
-              onClick={eventHandler}
-              name = "edit"
-              id = {id}
-              >
-                 <EditIcon />
-            </IconButton>
-            </Col> 
         </Row>
       );
     }
@@ -50,5 +37,5 @@ class EventosTablaIdentificacion extends Component {
 
 
   
-  export default EventosTablaIdentificacion;
+  export default EventosTablaProbabilidad;
   

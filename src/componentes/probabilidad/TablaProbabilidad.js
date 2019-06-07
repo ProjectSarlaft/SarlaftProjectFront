@@ -2,12 +2,13 @@ import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 import DatosProbabilidad from './DatosProbabilidad';
 import crearFilaTablaProbabilidad from '../../servicios/probabilidad/crearFilaTablaProbabilidad';
-import crearHeadersTablaProbabilidad from '../../servicios/probabilidad/crearHeadersTablaProbabilidad';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaProbabilidad from '../../servicios/probabilidad/validacionTablaProbabilidad';
 import AlertaTablaProbabilidad from './AlertaTablaProbabilidad';
+import HeaderTablaProbabilidad from './HeaderTablaProbabilidad';
+import EventosTablaProbabilidad from './EventosTablaProbabilidad';
 
 class TablaImpactos extends Component {
    constructor(props) {
@@ -20,15 +21,33 @@ class TablaImpactos extends Component {
            mensajeAlerta: "",
        }
       
-       this.handleChange = this.handleChange.bind(this);
        this.adicionarFila = this.adicionarFila.bind(this);
        this.guardarInformacion = this.guardarInformacion.bind(this);
        this.actualizarInformacion = this.actualizarInformacion.bind(this);
+       this.handleEvento = this.handleEvento.bind(this);
    }
 
-   handleChange(event) {
-     this.state.actualizarInformacionHandler(event);
-   };
+   handleEvento(event) {
+    const {informacion, indice} = this.state;
+    const tipoEvento = event.target.name;
+    const indiceFila = event.target.id;
+    debugger
+    if (tipoEvento === "delete") {
+      //logica para borrar una fila 
+      if (indice > 3) {
+        informacion.splice(indiceFila,1);
+        this.setState({
+          informacion: informacion,
+          indice:  this.state.indice - 1,
+        });
+      } else {
+        this.setState({
+          alerta: true,
+          mensajeAlerta: "El minimo de filas son 3",
+        })
+      }
+    }
+  }
 
    adicionarFila() {
        const {informacion, indice} = this.state;
@@ -83,13 +102,12 @@ class TablaImpactos extends Component {
 
    render() {
      const {informacion, alerta, mensajeAlerta} = this.state;
-     const headers = [crearHeadersTablaProbabilidad];
      return (
        <div>
          {botonAgregar(this.adicionarFila, this.guardarInformacion)} 
          {validacionInfo(alerta, mensajeAlerta)}
-         {strToComponents(headers, this.actualizarInformacion)}
-         {strToComponents(informacion,this.actualizarInformacion)}
+         {crearHeader()}
+         {strToComponents(informacion,this.actualizarInformacion, this.handleEvento)}
        </div>
          );
        }
@@ -113,11 +131,17 @@ class TablaImpactos extends Component {
            ></AlertaTablaProbabilidad>
      );
 
-     const strToComponents = (informacion, actualizarInformacionHandler) => (
+     
+     const  crearHeader = () => (
+    
+          <HeaderTablaProbabilidad></HeaderTablaProbabilidad>
+    );
+
+     const strToComponents = (informacion, actualizarInformacionHandler, handlerEvento) => (
        informacion.map( (row, index) =>
            (
            <Row>
-               <Col md={6} lg={6} >
+               <Col md={4} lg={4} >
                    <DatosProbabilidad
                        escala ={row.escala}
                        nivel = {row.nivel}
@@ -125,6 +149,13 @@ class TablaImpactos extends Component {
                        onChangeRow = {actualizarInformacionHandler}
                        id = {index}
                        key = {index}/>
+               </Col>
+               <Col md={1} lg={1} >
+                  <EventosTablaProbabilidad
+                      eventHandler={handlerEvento}
+                      id = {index}
+                      key = {index}>    
+                  </EventosTablaProbabilidad>
                </Col>
          </Row>)
    ));

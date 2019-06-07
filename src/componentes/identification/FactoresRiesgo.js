@@ -8,28 +8,48 @@ class FactoresRiesgo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            riesgoCliente: props.riesgoCliente,
-            riesgoProductos: props.riesgoProductos,
-            riesgoDistribucion: props.riesgoDistribucion,
-            riesgoJurisdiccion: props.riesgoJurisdiccion,
+            riesgoCliente: false,
+            riesgoProductos: false,
+            riesgoDistribucion: false,
+            riesgoJurisdiccion: false,
             id: props.id,
             isReadOnly: props.isReadOnly,
             onChangeRow: props.onChangeRow,
         }
     }
+
+    componentWillReceiveProps(nextProps) {
+      debugger
+      if(nextProps.riesgoCliente !== this.props.riesgoCliente) {
+          this.setState({riesgoCliente : nextProps.riesgoCliente});
+      }
+
+      if(nextProps.riesgoProductos !== this.props.riesgoProductos) {
+          this.setState({riesgoProductos : nextProps.riesgoProductos});
+      }
+
+      if(nextProps.riesgoDistribucion !== this.props.riesgoDistribucion) {
+          this.setState({riesgoDistribucion : nextProps.riesgoDistribucion});
+      }
+
+      if(nextProps.riesgoJurisdiccion !== this.props.riesgoJurisdiccion) {
+        this.setState({riesgoJurisdiccion : nextProps.riesgoJurisdiccion});
+    }
+  }
+
     render() {
-        const { riesgoCliente, riesgoProductos, riesgoDistribucion, riesgoJurisdiccion, isReadOnly, id, onChangeRow } = this.state;
+        const {isReadOnly, id, onChangeRow } = this.state;
       return (
         <div>
             <Row>
-              <Col  md={3} lg={3} > 
-                
+              <Col  md={3} lg={3} >  
                 <FormControlLabel
                 control ={
                 <Checkbox
                     name = "riesgoCliente"
-                    id = {id}
-                    defaultValue={riesgoCliente}   
+                    id = {id+""}
+                    key = {id + "riesgoCliente"}
+                    checked = {this.state.riesgoCliente}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </Checkbox>
@@ -43,8 +63,9 @@ class FactoresRiesgo extends Component {
                 control ={
                  <Checkbox 
                     name = "riesgoProductos"
-                    id = {id}
-                    defaultValue={riesgoProductos}  
+                    id = {id+""}
+                    key = {id + "riesgoProductos"}
+                    checked = {this.state.riesgoProductos}
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </Checkbox>
@@ -58,8 +79,9 @@ class FactoresRiesgo extends Component {
                  control = {
                 <Checkbox
                     name = "riesgoDistribucion"
-                    id = {id}
-                    defaultValue={riesgoDistribucion}   
+                    id = {id+""}
+                    key = {id + "riesgoDistribucion"}
+                    checked = {this.state.riesgoDistribucion}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </Checkbox>
@@ -74,8 +96,9 @@ class FactoresRiesgo extends Component {
                 control={
                 <Checkbox 
                     name = "riesgoJurisdiccion"
-                    id = {id}
-                    defaultValue={riesgoJurisdiccion}   
+                    id = {id+""}
+                    key = {id + "riesgoJurisdiccion"}
+                    checked = {this.state.riesgoJurisdiccion}   
                     onChange={onChangeRow}
                     readOnly={isReadOnly}>
                 </Checkbox>
