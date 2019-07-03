@@ -6,6 +6,8 @@ import FactoresRiesgo from './FactoresRiesgo';
 import EventosTablaIdentificacion from './EventosTablaIdentificacion';
 import crearFila from '../../servicios/identificacion/crearFila';
 import validacionFilaIdentificacion from '../../servicios/identificacion/validacionFilaIdentificacion.js';
+import adicionarIdentificacionService from '../../servicios/identificacion/adicionarIdentificacionService';
+import eliminarIdentificacionService from '../../servicios/identificacion/eliminarIdentificacionService';
 import AdicionFilaAlerta from './AdicionFilaAlerta';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -59,7 +61,7 @@ class TablaIdentificacion extends Component {
         const indiceFila = event.target.id;
         
         if (tipoEvento === "delete") {
-          //logica para borrar una fila 
+          eliminarIdentificacionService(informacion[indiceFila].riesgo);
           informacion.splice(indiceFila,1);
           this.setState({
             informacion: informacion,
@@ -81,7 +83,8 @@ class TablaIdentificacion extends Component {
           informacion: this.state.informacion.concat(crearFila),
           indiceActual:  indiceActual +1,
         });
-        // PENDIENTE Crear metodo para añadir esta columnuna en la BD
+        adicionarIdentificacionService(informacion[indiceActual]);
+        console.log(JSON.stringify(informacion[indiceActual]));
       } else {
         // Mandar Alerta
         var textoAlerta = "Los siguientes campos deben ser llenanos";

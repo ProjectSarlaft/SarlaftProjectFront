@@ -7,6 +7,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaImpacto from './../../servicios/impacto/validacionTablaImpacto';
+import adicionarImpactoService from './../../servicios/impacto/adicionarImpactoService';
+import eliminarImpactoService from './../../servicios/impacto/eliminarImpactoService';
 import AlertaTablaImpacto from './AlertaTablaImpacto';
 import HeadersTablaImpactos from './HeadersTablaImpactos';
 import EventosTablaImpacto from './EventosTablaImpacto';
@@ -44,7 +46,7 @@ class TablaImpactos extends Component {
       const indiceFila = event.target.id;
       debugger
       if (tipoEvento === "delete") {
-        //logica para borrar una fila 
+        eliminarImpactoService(informacion[indiceFila].escala);
         if (indice > 3) {
           informacion.splice(indiceFila,1);
           this.setState({
@@ -74,8 +76,9 @@ class TablaImpactos extends Component {
                 alerta: true,
                 mensajeAlerta: mensajeAlerta,
               })
-        } else {
-            // Todos los campos estan en orden, se llama a la BD
+        } else { 
+          console.log(JSON.stringify(informacion));
+          informacion.map(fila => adicionarImpactoService(fila))
         }
     };
 
