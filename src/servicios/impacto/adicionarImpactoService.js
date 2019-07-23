@@ -1,4 +1,4 @@
-var url = 'http://localhost:8080/probabilidad/';
+var url = 'http://localhost:8080/impacto/';
 
 var adicionarProbabilidadService = (data) => {
 fetch(url, {

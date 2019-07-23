@@ -9,8 +9,8 @@ const validarDatoNumerico = (numero, mensajeRetorno) => {
         return mensajeRetorno;
     }
 
-    if (numero < 0 ) {
-        mensajeRetorno.push("Nivel debe ser positivo");
+    if (numero < 1 || numero > 5) {
+        mensajeRetorno.push("Nivel debe estar entre el rango 1-5");
         return mensajeRetorno;
     }
     

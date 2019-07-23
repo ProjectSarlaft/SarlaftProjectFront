@@ -51,6 +51,7 @@ class DatosImpacto extends Component {
                     name = "nivel"
                     key = {id + "nivel"}
                     type = "number"
+                    InputProps={{ inputProps: { min: 0, max: 10 } }}
                     id = {id+""}
                     value={this.state.nivel||''}
                     onChange={onChangeRow}
