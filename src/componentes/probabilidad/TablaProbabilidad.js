@@ -136,7 +136,6 @@ class TablaImpactos extends Component {
 
      
      const  crearHeader = () => (
-    
           <HeaderTablaProbabilidad></HeaderTablaProbabilidad>
     );
 
