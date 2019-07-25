@@ -3,10 +3,30 @@ import React, { Component } from 'react';
 import crearFilaEscalaRiesgo from '../../servicios/riesgo/crearFilaEscalaRiesgo';
 import DatosEscalaRiesgo from './DatosEscalaRiesgo';
 import HeaderEscalaRiesgo from './HeaderEscalaRiesgo';
-import HeaderInformacionMatrizRiesgo from './HeaderInformacionMatrizRiesgo';
+import { withStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 import obtenerInformacionMatrizRiesgo from '../../servicios/riesgo/obtenerInformacionMatrizRiesgo'
 import { Input } from '@material-ui/core';
 
+
+
+const styles = theme => ({
+  root: {
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+      overflowX: 'auto',
+      backgroundColor: "red",
+  },
+  red: {
+    backgroundColor: "red",
+  },
+  green: {
+    backgroundColor: "green",
+  },
+  yellow: {
+    backgroundColor: "yellow",
+  },
+});
 class TablaRiesgo extends Component {
     constructor(props) {
         super(props);
@@ -41,14 +61,15 @@ class TablaRiesgo extends Component {
 
     render() {
       const {informacionEscalaRiesgo , informacionMatrizRiesgo} = this.state;
-      const listaImpactos = informacionMatrizRiesgo.reduce(function(acc, x){if(!acc[x.escalaImpacto]) acc[x.escalaImpacto] = []; acc[x.escalaImpacto].push(x); return acc}, {});
-      const listaProbabilidades = informacionMatrizRiesgo.reduce(function(acc, x){if(!acc[x.escalaProbabilidad]) acc[x.escalaProbabilidad] = []; acc[x.escalaProbabilidad].push(x); return acc}, {});
+      
+      const items = cearMatrizRiesgo(informacionMatrizRiesgo, this.props);
+     
       debugger
         return (
           <div>
-            {crearHeaderEscalaRiesgo()}
-            {escribirInformacionEscalaRiesgo(informacionEscalaRiesgo, this.actualizarInformacion)}
-            {escribirInformacionMatrizRiesgo(informacionMatrizRiesgo)}
+              {crearHeaderEscalaRiesgo()}
+              {escribirInformacionEscalaRiesgo(informacionEscalaRiesgo, this.actualizarInformacion)}
+              {items}
           </div>
             );
         }
@@ -71,49 +92,71 @@ class TablaRiesgo extends Component {
           </Row>)
     ));
 
-    const escribirInformacionMatrizRiesgo = (informacion) => (
-      informacion.map((row, index) => (
-          <Col>
-              <Row md={2} lg={2} >
-              <Input
-              name = {row.escalaImpacto}
-              key = {row.escalaImpacto}
-              id = {row.escalaImpacto}
-              value={row.escalaImpacto||''}
-              readOnly={true}>
-            </Input>
-            </Row>
-        </Col>)
-      ));
-      
-      function isEmpty(arg) {
-        for (var item in arg) {
-          return false;
-        }
-        return true;
-      }
-       
-  
 
   const  crearHeaderEscalaRiesgo = () => (
     <HeaderEscalaRiesgo></HeaderEscalaRiesgo>
   );
 
-    const  crearHeaderInformacionMatrizRiesgo = (listaProbabilidades) => (
-        
-        listaProbabilidades.map((row, index) =>
-        (
-        <Col>
-            <Row md={2} lg={2} >
-            <Input
-              name = {row.escalaImpacto}
-              key = {index + row.escalaImpacto}
-              id = {index+ row.escalaImpacto}
-              value={row.escalaImpacto||''}
-              readOnly={true}>
-            </Input>
-            </Row>
-      </Col>)));
+      function cearMatrizRiesgo(information, props) {
+        // Creando Headers Matriz y Adicionando Empty Space al principio 
+        const listaImpactos = information.reduce(function(acc, value){if(!acc.some(x => value.escalaImpacto === x.riesgoEscala.escala) && (value !== undefined )) acc.push(crearObjeto(value.escalaImpacto));return acc}, []);
+        const listaProbabilidades = information.reduce(function(acc, value){if(!acc.some(x => value.escalaProbabilidad === x.riesgoEscala.escala) && (value !== undefined )) acc.push(crearObjeto(value.escalaProbabilidad)); return acc}, []);
+        listaProbabilidades.unshift(crearObjeto(""));
+        var matrizRiesgo = [];
+        var contadorSizeFila = 0;
+        var registrosPorFila = [];
+        var contadorImpacto = 0;
+        crearHeadersMatrizRiesgo(listaProbabilidades, matrizRiesgo, props);
+        for(var value of information) {
+          if(contadorSizeFila < listaImpactos.length ) {
+            registrosPorFila.push(value);
+            contadorSizeFila++;
+            if(contadorSizeFila === listaImpactos.length) {
+              registrosPorFila.unshift(listaImpactos[contadorImpacto]);
+              matrizRiesgo.push(<Row md={10} lg={10}> {crearRow(registrosPorFila, props)}</Row>)  
+              contadorImpacto++;
+              contadorSizeFila = 0;
+              registrosPorFila = []
+            }
+          }
+      }
+      return matrizRiesgo;
+      }
+
+      function crearHeadersMatrizRiesgo(listaProbabilidades, matrizRiesgo, props) {
+          matrizRiesgo.push(<Row md={10} lg={10}> {crearRow(listaProbabilidades, props)}</Row>)
+      }
+
+      function crearRow(registros, props) {
+        var fila = []
+        var sizeMatriz = registros.length +1 ;
+        const { classes } = props;
+        registros.map((value, index) => {
+          debugger
+        fila.push(<Col md={10/sizeMatriz} lg={10/sizeMatriz}>
+              <Input 
+                name = {value}
+                style={{
+                  backgroundColor: value.riesgoEscala.color
+                }}
+                key = {value} 
+                id = {index + value} 
+                value={value.riesgoEscala.escala||''} 
+                readOnly={true}>
+              </Input>
+            </Col>)
+            });
+        return fila;
+      }
 
 
-      export default TablaRiesgo;
+      function crearObjeto(titulo) {
+        return {
+          riesgoEscala: {
+            escala: titulo,
+            color: "grey"}
+          }
+      }
+
+
+      export default withStyles(styles)(TablaRiesgo);
