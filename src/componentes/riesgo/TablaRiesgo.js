@@ -61,15 +61,12 @@ class TablaRiesgo extends Component {
 
     render() {
       const {informacionEscalaRiesgo , informacionMatrizRiesgo} = this.state;
-      
-      const items = cearMatrizRiesgo(informacionMatrizRiesgo, this.props);
-     
-      debugger
+      const matrizRiesgo = cearMatrizRiesgo(informacionMatrizRiesgo, this.props);
         return (
           <div>
               {crearHeaderEscalaRiesgo()}
               {escribirInformacionEscalaRiesgo(informacionEscalaRiesgo, this.actualizarInformacion)}
-              {items}
+              {matrizRiesgo}
           </div>
             );
         }
@@ -102,16 +99,17 @@ class TablaRiesgo extends Component {
         const listaImpactos = information.reduce(function(acc, value){if(!acc.some(x => value.escalaImpacto === x.riesgoEscala.escala) && (value !== undefined )) acc.push(crearObjeto(value.escalaImpacto));return acc}, []);
         const listaProbabilidades = information.reduce(function(acc, value){if(!acc.some(x => value.escalaProbabilidad === x.riesgoEscala.escala) && (value !== undefined )) acc.push(crearObjeto(value.escalaProbabilidad)); return acc}, []);
         listaProbabilidades.unshift(crearObjeto(""));
+        debugger
         var matrizRiesgo = [];
         var contadorSizeFila = 0;
         var registrosPorFila = [];
         var contadorImpacto = 0;
         crearHeadersMatrizRiesgo(listaProbabilidades, matrizRiesgo, props);
         for(var value of information) {
-          if(contadorSizeFila < listaImpactos.length ) {
+          if(contadorSizeFila < (listaProbabilidades.length -1)) {
             registrosPorFila.push(value);
             contadorSizeFila++;
-            if(contadorSizeFila === listaImpactos.length) {
+            if(contadorSizeFila === listaProbabilidades.length -1) {
               registrosPorFila.unshift(listaImpactos[contadorImpacto]);
               matrizRiesgo.push(<Row md={10} lg={10}> {crearRow(registrosPorFila, props)}</Row>)  
               contadorImpacto++;
@@ -124,16 +122,13 @@ class TablaRiesgo extends Component {
       }
 
       function crearHeadersMatrizRiesgo(listaProbabilidades, matrizRiesgo, props) {
-          matrizRiesgo.push(<Row md={10} lg={10}> {crearRow(listaProbabilidades, props)}</Row>)
+          matrizRiesgo.push(<Row> {crearRow(listaProbabilidades, props)}</Row>)
       }
 
       function crearRow(registros, props) {
         var fila = []
-        var sizeMatriz = registros.length +1 ;
-        const { classes } = props;
         registros.map((value, index) => {
-          debugger
-        fila.push(<Col md={10/sizeMatriz} lg={10/sizeMatriz}>
+        fila.push(<Col >
               <Input 
                 name = {value}
                 style={{
@@ -154,7 +149,7 @@ class TablaRiesgo extends Component {
         return {
           riesgoEscala: {
             escala: titulo,
-            color: "grey"}
+            color: "white"}
           }
       }
 
