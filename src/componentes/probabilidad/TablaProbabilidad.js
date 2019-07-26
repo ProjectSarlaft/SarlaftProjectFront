@@ -63,7 +63,6 @@ class TablaImpactos extends Component {
    };
 
    guardarInformacion() {
-       debugger
        const {informacion} = this.state;
        const validacion = validacionTablaProbabilidad(informacion);
        if (validacion.length > 0) {

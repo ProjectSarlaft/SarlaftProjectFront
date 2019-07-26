@@ -2,14 +2,18 @@ import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
 import './../../App.css'
 import { Input } from '@material-ui/core';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
+const colores = ["#8bc34a", "#cddc39", "#ffc107", "#dd2c00", "#212121"];
 
 class DatosImpacto extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            escala: "",
-            accion: "",
-            color: "",
+            escala: this.props.escala,
+            accion: this.props.accion,
+            color: this.props.color,
             onChangeRow: props.onChangeRow,
             id: props.id,
         }
@@ -57,14 +61,28 @@ class DatosImpacto extends Component {
                   </Input>
                 </Col>
                 <Col md={3} lg={3} >
-                  <Input
-                    name = "color"
-                    key = {id + "color"}
-                    id = {id+""}
-                    value={this.state.color||''}
-                    onChange={onChangeRow}
-                    readOnly={isReadOnly}>
-                  </Input>
+                <Select
+                  name = "color"
+                  key = {"color"}
+                  id = {this.state.escala}
+                  style={{
+                    backgroundColor: this.state.color
+                  }}
+                  onChange={onChangeRow}
+                  input={<Input name="age" id="age-label-placeholder" />}
+                >
+                {colores.map((color)=> {
+                  debugger
+                  return (
+                    <MenuItem 
+                      value={color} 
+                      id={id}
+                      style={{
+                       backgroundColor: color
+                      }}>
+                    </MenuItem>);
+                })};   
+                </Select>
                 </Col>
             </Row>
         </div>
