@@ -8,6 +8,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaProbabilidad from '../../servicios/probabilidad/validacionTablaProbabilidad';
 import adicionarProbabilidadService from '../../servicios/probabilidad/adicionarProbabilidadService';
 import eliminarProbabilidadService from '../../servicios/probabilidad/eliminarProbabilidadService';
+import obtenerInformacionProbabilidadService from '../../servicios/probabilidad/obtenerInformacionProbabilidadService';
 import AlertaTablaProbabilidad from './AlertaTablaProbabilidad';
 import HeaderTablaProbabilidad from './HeaderTablaProbabilidad';
 import EventosTablaProbabilidad from './EventosTablaProbabilidad';
@@ -17,8 +18,8 @@ class TablaImpactos extends Component {
       debugger
        super(props);
        this.state = {
-           informacion: [crearFilaTablaProbabilidad, crearFilaTablaProbabilidad, crearFilaTablaProbabilidad ],
-           indice: 3,
+           informacion: [],
+           indice: 0,
            alerta: false,
            mensajeAlerta: "",
        }
@@ -28,6 +29,16 @@ class TablaImpactos extends Component {
        this.actualizarInformacion = this.actualizarInformacion.bind(this);
        this.handleEvento = this.handleEvento.bind(this);
    }
+
+
+   componentDidMount(){
+    obtenerInformacionProbabilidadService().then(response => 
+      this.setState(
+        {
+          informacion: response,
+          indice: response.length,
+        }));
+}
 
    handleEvento(event) {
     const {informacion, indice} = this.state;

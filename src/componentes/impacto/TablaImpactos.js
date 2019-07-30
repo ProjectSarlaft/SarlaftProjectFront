@@ -9,6 +9,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaImpacto from './../../servicios/impacto/validacionTablaImpacto';
 import adicionarImpactoService from './../../servicios/impacto/adicionarImpactoService';
 import eliminarImpactoService from './../../servicios/impacto/eliminarImpactoService';
+import obtenerInformacionImpactoService from '../../servicios/impacto/obtenerInformacionImpactoService';
 import AlertaTablaImpacto from './AlertaTablaImpacto';
 import HeadersTablaImpactos from './HeadersTablaImpactos';
 import EventosTablaImpacto from './EventosTablaImpacto';
@@ -18,8 +19,8 @@ class TablaImpactos extends Component {
        debugger
         super(props);
         this.state = {
-            informacion: [crearFilaTablaImpacto, crearFilaTablaImpacto, crearFilaTablaImpacto ],
-            indice: 3,
+            informacion: [],
+            indice: 0,
             alerta: false,
             mensajeAlerta: "",
         }
@@ -28,6 +29,15 @@ class TablaImpactos extends Component {
         this.guardarInformacion = this.guardarInformacion.bind(this);
         this.actualizarInformacion = this.actualizarInformacion.bind(this);
         this.handleEvento = this.handleEvento.bind(this);
+      }
+
+      componentDidMount(){
+        obtenerInformacionImpactoService().then(response => 
+          this.setState(
+            {
+              informacion: response,
+              indice: response.length,
+            }));
     }
 
     adicionarFila() {
@@ -105,6 +115,7 @@ class TablaImpactos extends Component {
 
     render() {
       const {informacion, alerta, mensajeAlerta} = this.state;
+      debugger
       return (
         <div>
           {botonAgregar(this.adicionarFila, this.guardarInformacion)}  

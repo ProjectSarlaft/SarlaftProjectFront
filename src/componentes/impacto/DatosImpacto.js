@@ -7,16 +7,16 @@ class DatosImpacto extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            escala: "",
-            nivel: "",
-            afectacionEconomica: "",
+            escala: props.escala,
+            nivel: props.nivel,
+            afectacionEconomica: props.afectacionEconomica,
             onChangeRow: props.onChangeRow,
             id: props.id,
         }
     }
 
     componentWillReceiveProps(nextProps) {
-    
+      debugger
       if(nextProps.escala !== this.props.escala) {
           this.setState({escala : nextProps.escala});
       }
@@ -33,6 +33,7 @@ class DatosImpacto extends Component {
     render() {
       const isReadOnly = false;
       const { id, onChangeRow } = this.state;
+      debugger
       return (
         <div>
             <Row>

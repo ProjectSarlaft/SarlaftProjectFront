@@ -204,7 +204,6 @@ class TablaRiesgo extends Component {
                     input={<Input name="escala" value={value.riesgoEscala.escala||''}  id={value.escalaImpacto + value.escalaProbabilidad}/>}
                   > 
                   {informacionEscalaRiesgo.map((valoresRiesgoEscala)=> {
-                    debugger
                     return (
                       <MenuItem 
                         value={valoresRiesgoEscala.riesgoEscala.color} 
