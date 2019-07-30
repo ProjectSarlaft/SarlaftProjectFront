@@ -15,6 +15,7 @@ class DatosImpacto extends Component {
             accion: this.props.accion,
             color: this.props.color,
             onChangeRow: props.onChangeRow,
+            onChangeColor: props.onChangeColor,
             id: props.id,
         }
     }
@@ -36,7 +37,8 @@ class DatosImpacto extends Component {
 
     render() {
       const isReadOnly = false;
-      const { id, onChangeRow } = this.state;
+      const { id, onChangeRow, onChangeColor } = this.state;
+      debugger
       return (
         <div>
             <Row>
@@ -63,20 +65,21 @@ class DatosImpacto extends Component {
                 <Col md={3} lg={3} >
                 <Select
                   name = "color"
-                  key = {"color"}
-                  id = {this.state.escala}
+                  key = {id + "color"}
+                  id = {"4"}
+                  value= {this.state.escala||''}
                   style={{
                     backgroundColor: this.state.color
                   }}
                   onChange={onChangeRow}
-                  input={<Input name="age" id="age-label-placeholder" />}
+                  input={<Input name="color" value ={this.state.escala||''} id = {id+""} />}
                 >
                 {colores.map((color)=> {
-                  debugger
                   return (
                     <MenuItem 
                       value={color} 
-                      id={id}
+                      name = "color"
+                      id = {id}
                       style={{
                        backgroundColor: color
                       }}>

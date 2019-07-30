@@ -20,7 +20,7 @@ const obtenerInformacionEscalaRiesgo = () => {/*async () => {
                         {
                             escala:"Medio",
                             accion: "Asaroso",
-                            color:  "#cddc39"
+                            color:  "#ffeb3b"
                         }      
             },
             {
@@ -30,7 +30,15 @@ const obtenerInformacionEscalaRiesgo = () => {/*async () => {
                             accion: "Run",
                             color:"#ffc107"
                         }      
-            }
+            },
+            {
+                riesgoEscala:
+                    {
+                        escala:"Muy Alto",
+                        accion: "Acaboce",
+                        color:"#dd2c00"
+                    }    
+            }  
        ];
     };
 
