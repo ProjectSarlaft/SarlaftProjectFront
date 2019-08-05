@@ -46,13 +46,24 @@ class TablaImpactos extends Component {
     const indiceFila = event.target.id;
     debugger
     if (tipoEvento === "delete") {
-      eliminarProbabilidadService(informacion[indiceFila].escala);
       if (indice > 3) {
-        informacion.splice(indiceFila,1);
-        this.setState({
-          informacion: informacion,
-          indice:  this.state.indice - 1,
-        });
+        eliminarProbabilidadService(informacion[indiceFila].escala)
+          .then(res => {
+            if(res.status < 400) {
+              informacion.splice(indiceFila,1);
+              this.setState({
+                informacion: informacion,
+                indice:  this.state.indice - 1,
+                alerta: true,
+                mensajeAlerta: "La fila ha sido eliminada correctamente",
+              });
+            } else {
+              this.setState({
+                alerta: true,
+                mensajeAlerta: "La fila no ha sido eliminada correctamente",
+              })
+            }
+          });
       } else {
         this.setState({
           alerta: true,

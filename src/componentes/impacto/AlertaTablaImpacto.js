@@ -47,7 +47,7 @@ componentWillReceiveProps(nextProps) {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Campos Requeridos"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Alerta!"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
                 {text}
