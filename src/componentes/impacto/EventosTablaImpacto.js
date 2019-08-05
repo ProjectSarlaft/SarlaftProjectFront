@@ -27,7 +27,7 @@ class EventosTablaImpacto extends Component {
               name = "delete"
               id = {id}
               >
-                 <DeleteIcon  />
+            <DeleteIcon />
             </IconButton>
             </Col>
         </Row>

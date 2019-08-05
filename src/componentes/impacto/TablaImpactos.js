@@ -7,6 +7,9 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaImpacto from './../../servicios/impacto/validacionTablaImpacto';
+import adicionarImpactoService from './../../servicios/impacto/adicionarImpactoService';
+import eliminarImpactoService from './../../servicios/impacto/eliminarImpactoService';
+import obtenerInformacionImpactoService from '../../servicios/impacto/obtenerInformacionImpactoService';
 import AlertaTablaImpacto from './AlertaTablaImpacto';
 import HeadersTablaImpactos from './HeadersTablaImpactos';
 import EventosTablaImpacto from './EventosTablaImpacto';
@@ -16,8 +19,8 @@ class TablaImpactos extends Component {
        debugger
         super(props);
         this.state = {
-            informacion: [crearFilaTablaImpacto, crearFilaTablaImpacto, crearFilaTablaImpacto ],
-            indice: 3,
+            informacion: [],
+            indice: 0,
             alerta: false,
             mensajeAlerta: "",
         }
@@ -26,6 +29,15 @@ class TablaImpactos extends Component {
         this.guardarInformacion = this.guardarInformacion.bind(this);
         this.actualizarInformacion = this.actualizarInformacion.bind(this);
         this.handleEvento = this.handleEvento.bind(this);
+      }
+
+      componentDidMount(){
+        obtenerInformacionImpactoService().then(response => 
+          this.setState(
+            {
+              informacion: response,
+              indice: response.length,
+            }));
     }
 
     adicionarFila() {
@@ -44,7 +56,7 @@ class TablaImpactos extends Component {
       const indiceFila = event.target.id;
       debugger
       if (tipoEvento === "delete") {
-        //logica para borrar una fila 
+        eliminarImpactoService(informacion[indiceFila].escala);
         if (indice > 3) {
           informacion.splice(indiceFila,1);
           this.setState({
@@ -74,8 +86,9 @@ class TablaImpactos extends Component {
                 alerta: true,
                 mensajeAlerta: mensajeAlerta,
               })
-        } else {
-            // Todos los campos estan en orden, se llama a la BD
+        } else { 
+          console.log(JSON.stringify(informacion));
+          informacion.map(fila => adicionarImpactoService(fila))
         }
     };
 
@@ -102,6 +115,7 @@ class TablaImpactos extends Component {
 
     render() {
       const {informacion, alerta, mensajeAlerta} = this.state;
+      debugger
       return (
         <div>
           {botonAgregar(this.adicionarFila, this.guardarInformacion)}  

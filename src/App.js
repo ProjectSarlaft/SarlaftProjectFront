@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import TablaIdentificacion from './componentes/identification/TablaIdentificacion';
 import TablaImpactos from './componentes/impacto/TablaImpactos';
 import TablaProbabilidad from './componentes/probabilidad/TablaProbabilidad';
+import TablaRiesgo from './componentes/riesgo/TablaRiesgo';
+
 
 function TabContainer(props) {
   return (
@@ -51,11 +53,13 @@ function App() {
           <Tab label="Identificacion" />
           <Tab label="Impacto" />
           <Tab label="Probabilidad" />
+          <Tab label="Riesgo" />
         </Tabs>
       </AppBar>
       {value === 0 && <TabContainer><TablaIdentificacion></TablaIdentificacion></TabContainer>}
       {value === 1 && <TabContainer><TablaImpactos></TablaImpactos></TabContainer>}
       {value === 2 && <TabContainer><TablaProbabilidad></TablaProbabilidad></TabContainer>}
+      {value === 3 && <TabContainer><TablaRiesgo></TablaRiesgo></TabContainer>}
     </div>
   );
 }

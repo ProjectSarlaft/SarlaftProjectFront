@@ -7,9 +7,9 @@ class DatosProbabilidad extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            escala: "",
-            nivel: "",
-            posibilidadAnual: "",
+            escala: props.escala,
+            nivel: props.nivel,
+            posibilidadAnual: props.posibilidadAnual,
             onChangeRow: props.onChangeRow,
             id: props.id,
         }
