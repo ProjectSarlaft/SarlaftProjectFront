@@ -1,6 +1,6 @@
 import {Row, Col } from 'react-flexbox-grid';
 import React, { Component } from 'react';
-import crearFilaEscalaRiesgo from '../../servicios/riesgo/crearFilaEscalaRiesgo';
+import crearObjetoRiesgoEscala from '../../servicios/riesgo/crearObjetoRiesgoEscala';
 import DatosEscalaRiesgo from './DatosEscalaRiesgo';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -11,6 +11,10 @@ import obtenerInformacionEscalaRiesgo from '../../servicios/riesgo/obtenerInform
 import { Input } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+
+const opcionesRiesgoEscala = ['Muy Bajo', 'Bajo', 'Medio', 'Alto', 'Muy Alto'];
+const MAXIMA_CANTIDAD_FILAS_ESCALA_RIESGO = 5;
+const STRING_VACIO = "";
 
 class TablaRiesgo extends Component {
     constructor(props) {
@@ -24,7 +28,6 @@ class TablaRiesgo extends Component {
         this.actualizarInformacionMatrizRiesgo = this.actualizarInformacionMatrizRiesgo.bind(this);
         this.adicionarFilaEscalaRiesgo = this.adicionarFilaEscalaRiesgo.bind(this);
         this.guardarInformacionEscalaRiesgo = this.guardarInformacionEscalaRiesgo.bind(this);
-        this.actualizarColorEscalaRiesgo = this.actualizarColorEscalaRiesgo.bind(this);
     }
 
     componentDidMount(){
@@ -36,9 +39,16 @@ class TablaRiesgo extends Component {
     
    adicionarFilaEscalaRiesgo() {
       const {informacionEscalaRiesgo} = this.state;
-      if (informacionEscalaRiesgo.length < 5) {
+      if (informacionEscalaRiesgo.length < MAXIMA_CANTIDAD_FILAS_ESCALA_RIESGO) {
           this.setState({
-              informacionEscalaRiesgo: this.state.informacionEscalaRiesgo.concat({riesgoEscala:{escala:"",accion: "",color:  ""}}),
+              informacionEscalaRiesgo: this.state.informacionEscalaRiesgo.concat(
+                {riesgoEscala:
+                  {
+                    escala:opcionesRiesgoEscala[informacionEscalaRiesgo.length],
+                    accion: STRING_VACIO,
+                    color:  STRING_VACIO
+                  }
+                }),
             });
       }
     };
@@ -57,10 +67,10 @@ class TablaRiesgo extends Component {
         id = event.currentTarget.id;
       }
       const valorOriginal = this.state.informacionEscalaRiesgo[id].riesgoEscala[name];
-      if(validarColorExistente(value, this.state.informacionEscalaRiesgo))
+      if(!this.state.informacionEscalaRiesgo.some((row) => row.riesgoEscala.color === value)) // Verificar que el color no este seleccionado
       this.setState(prevState => {
         const informacionEscalaRiesgo = prevState.informacionEscalaRiesgo.map((row, j) => {
-          if(j+"" === id) {
+          if(j + STRING_VACIO === id) {
             row.riesgoEscala[name] = value;
             return row;
           } else {
@@ -81,7 +91,6 @@ class TablaRiesgo extends Component {
   actualizarInformacionMatrizRiesgo(event) {
     const {name, value} = event.target;
     const escalaRiesgo = this.state.informacionEscalaRiesgo.filter((escalaRiesgoRegistro) => value === escalaRiesgoRegistro.riesgoEscala.color);
-    debugger
     this.setState(prevState => {
       const informacionMatrizRiesgo = prevState.informacionMatrizRiesgo.map((row) => {
         if(name === row.escalaImpacto+row.escalaProbabilidad) {
@@ -93,26 +102,21 @@ class TablaRiesgo extends Component {
     });
 };
 
-    actualizarColorEscalaRiesgo(event) {
-        debugger;
-    }
-
     render() {
       const {informacionEscalaRiesgo , informacionMatrizRiesgo} = this.state;
-      const matrizRiesgo = cearMatrizRiesgo(informacionMatrizRiesgo, informacionEscalaRiesgo,this.actualizarInformacionMatrizRiesgo);
         return (
           <div>
-              {botonAgregar(this.adicionarFilaEscalaRiesgo, this.guardarInformacion)} 
+              {botonAgregarYGuardarEscalaRiesgo(this.adicionarFilaEscalaRiesgo, this.guardarInformacion)} 
               {crearHeaderEscalaRiesgo()}
               {escribirInformacionEscalaRiesgo(informacionEscalaRiesgo, this.actualizarInformacionEscalaRiesgos, this.actualizarColorEscalaRiesgo)}
-              {botonGuardar(this.guardarInformacionMatrizRiesgo)}
-              {matrizRiesgo}
+              {botonGuardarMatrizRiesgo(this.guardarInformacionMatrizRiesgo)}
+              {crearMatrizRiesgo(informacionMatrizRiesgo, informacionEscalaRiesgo,this.actualizarInformacionMatrizRiesgo)}
           </div>
             );
         }
       }
 
-      const  botonAgregar = (agregarFilaHandler, guardarInfoHandler) => (
+      const  botonAgregarYGuardarEscalaRiesgo = (agregarFilaHandler, guardarInfoHandler) => (
         <Row>
             <Fab color="secondary" aria-label="Add" size="small" onClick={agregarFilaHandler} >
                 <AddIcon />
@@ -123,7 +127,7 @@ class TablaRiesgo extends Component {
         </Row>
       );
  
-      const  botonGuardar = (guardarInfoHandler) => (
+      const  botonGuardarMatrizRiesgo = (guardarInfoHandler) => (
         <Row>
             <Fab color="secondary" aria-label="Save" size="small" onClick={guardarInfoHandler} >
                 <SaveIcon />
@@ -131,7 +135,7 @@ class TablaRiesgo extends Component {
         </Row>
       );
 
-      const escribirInformacionEscalaRiesgo = (informacion, actualizarInformacionHandler,actualizarColorEscalaRiesgo) => (
+      const escribirInformacionEscalaRiesgo = (informacion, actualizarInformacionHandler) => (
         informacion.map( (row, index) => 
             (
             <Row>
@@ -141,67 +145,44 @@ class TablaRiesgo extends Component {
                         accion = {row.riesgoEscala.accion} 
                         color = {row.riesgoEscala.color}
                         onChangeRow = {actualizarInformacionHandler}
-                        onChangeColor = {actualizarColorEscalaRiesgo}
                         id = {index}
                         key = {index}/>
                 </Col>
           </Row>)
     ));
 
+      const  crearHeaderEscalaRiesgo = () => (
+        <HeaderEscalaRiesgo></HeaderEscalaRiesgo>
+      );
 
-  const  crearHeaderEscalaRiesgo = () => (
-    <HeaderEscalaRiesgo></HeaderEscalaRiesgo>
-  );
-
-      function cearMatrizRiesgo(informationMatrizRiesgo, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo) {
-        // Creando Headers Matriz y Adicionando Empty Space al principio 
-        const listaImpactos = informationMatrizRiesgo.reduce(function(acc, value){if(!acc.some(x => value.escalaImpacto === x.riesgoEscala.escala) && (value !== undefined )) acc.push(crearObjeto(value.escalaImpacto));return acc}, []);
-        const listaProbabilidades = informationMatrizRiesgo.reduce(function(acc, value){if(!acc.some(x => value.escalaProbabilidad === x.riesgoEscala.escala) && (value !== undefined )) acc.push(crearObjeto(value.escalaProbabilidad)); return acc}, []);
-        listaProbabilidades.unshift(crearObjeto(""));
-        debugger
+      function crearMatrizRiesgo(informationMatrizRiesgo, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo) {
+        const {listaImpactos, listaProbabilidades} = obtenerListaDeProbabilidadesEImpactos(informationMatrizRiesgo)
         var matrizRiesgo = [];
-        var contadorSizeFila = 0;
-        var registrosPorFila = [];
-        var contadorImpacto = 0;
-        crearHeadersMatrizRiesgo(listaProbabilidades, matrizRiesgo,informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo);
-        for(var value of informationMatrizRiesgo) {
-          if(contadorSizeFila < (listaProbabilidades.length -1)) {
-            registrosPorFila.push(value);
-            contadorSizeFila++;
-            if(contadorSizeFila === listaProbabilidades.length -1) {
-              registrosPorFila.unshift(listaImpactos[contadorImpacto]);
-              matrizRiesgo.push(<Row md={10} lg={10}> {crearRow(registrosPorFila, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo)}</Row>)  
-              contadorImpacto++;
-              contadorSizeFila = 0;
-              registrosPorFila = []
-            }
-          }
-      }
-      return matrizRiesgo;
+        crearHeadersMatrizRiesgo(listaProbabilidades, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo, matrizRiesgo);
+        return crearInformacionMatrizRiesgo(informationMatrizRiesgo, listaProbabilidades, listaImpactos, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo, matrizRiesgo);
       }
 
-      function crearHeadersMatrizRiesgo(listaProbabilidades, matrizRiesgo, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo) {
+      function crearHeadersMatrizRiesgo(listaProbabilidades, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo, matrizRiesgo) {
           matrizRiesgo.push(<Row> {crearRow(listaProbabilidades, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo)}</Row>)
       }
 
       function crearRow(informacionMatrizRiesgo,informacionEscalaRiesgo,actualizarInformacionMatrizRiesgo) {
         var fila = []
-        const colores = ["#8bc34a", "#cddc39", "#ffc107", "#dd2c00", "#212121"];
         informacionMatrizRiesgo.map((value) => {
-          debugger
-        if(value.hasOwnProperty('escalaImpacto') && value.hasOwnProperty('escalaProbabilidad')) {
-          fila.push(<Col lg={2} md={2}>
-                    <Select
-                    name = {value.escalaImpacto + value.escalaProbabilidad}
-                    key = {value.escalaImpacto + value.escalaProbabilidad} 
-                    id = {value.escalaImpacto + value.escalaProbabilidad} 
-                    style={{
-                      backgroundColor: value.riesgoEscala.color,
-                      width: "100%"
-                    }}
-                    renderValue = {() => value.riesgoEscala.escala||''}
-                    onChange={actualizarInformacionMatrizRiesgo}
-                    input={<Input name="escala" value={value.riesgoEscala.escala||''}  id={value.escalaImpacto + value.escalaProbabilidad}/>}
+          if(value.hasOwnProperty('escalaImpacto') && value.hasOwnProperty('escalaProbabilidad')) {
+            fila.push(
+              <Col lg={2} md={2}>
+                <Select
+                  name = {value.escalaImpacto + value.escalaProbabilidad}
+                  key = {value.escalaImpacto + value.escalaProbabilidad} 
+                  id = {value.escalaImpacto + value.escalaProbabilidad} 
+                  style={{
+                    backgroundColor: value.riesgoEscala.color,
+                    width: "100%"
+                  }}
+                  renderValue = {() => value.riesgoEscala.escala||''}
+                  onChange={actualizarInformacionMatrizRiesgo}
+                  input={<Input name="escala" value={value.riesgoEscala.escala||''}  id={value.escalaImpacto + value.escalaProbabilidad}/>}
                   > 
                   {informacionEscalaRiesgo.map((valoresRiesgoEscala)=> {
                     return (
@@ -214,11 +195,10 @@ class TablaRiesgo extends Component {
                       </MenuItem>);
                   })};   
                   </Select> 
-                  </Col>);
-
-          
+              </Col>);          
         } else {
-          fila.push(<Col lg={2} md={2}>
+          fila.push(
+          <Col lg={2} md={2}>
             <Input 
               name = {value.escalaImpacto + value.escalaProbabilidad}
               style={{
@@ -231,23 +211,58 @@ class TablaRiesgo extends Component {
             </Input>
           </Col>);
         }
-        
-            });
+      });
         return fila;
       }
 
-
-      function crearObjeto(titulo) {
-        return {
-          riesgoEscala: {
-            escala: titulo,
-            color: "white"}
+      function crearInformacionMatrizRiesgo(informationMatrizRiesgo, listaProbabilidades, listaImpactos, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo, matrizRiesgo) {
+        var { contadorSizeFila, registrosPorFila, contadorImpacto } = inicializarVariablesMatrizRiesgo()
+        for(var value of informationMatrizRiesgo) {
+          if(contadorSizeFila < (listaProbabilidades.length -1)) {
+            registrosPorFila.push(value);
+            contadorSizeFila++;
+            if(contadorSizeFila === listaProbabilidades.length -1) {
+              registrosPorFila.unshift(listaImpactos[contadorImpacto]);
+              matrizRiesgo.push(
+                  <Row md={10} lg={10}>
+                    {crearRow(registrosPorFila, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo)}
+                  </Row>)  
+              contadorImpacto++;
+              contadorSizeFila = 0;
+              registrosPorFila = []
+            }
           }
       }
+      return matrizRiesgo;
+     }
 
-      function validarColorExistente(value, informacionRiesgoEscala) {
-        debugger
-        return !informacionRiesgoEscala.some((row) => row.riesgoEscala.color === value);
+      function obtenerListaDeProbabilidadesEImpactos(informationMatrizRiesgo) {
+
+        const listaImpactos = informationMatrizRiesgo
+                                .reduce(function(acc, value) {
+                                    if(!acc.some(x => value.escalaImpacto === x.riesgoEscala.escala) && (value !== undefined ))
+                                      acc.push(crearObjetoRiesgoEscala(value.escalaImpacto));return acc}, []);
+
+        const listaProbabilidades = informationMatrizRiesgo
+                                .reduce(function(acc, value) {
+                                    if(!acc.some(x => value.escalaProbabilidad === x.riesgoEscala.escala) && (value !== undefined ))
+                                      acc.push(crearObjetoRiesgoEscala(value.escalaProbabilidad)); return acc}, []);
+
+        // Adionando campo vacio en la matriz                              
+        listaProbabilidades.unshift(crearObjetoRiesgoEscala(STRING_VACIO));
+
+        return {
+          listaProbabilidades: listaProbabilidades,
+          listaImpactos: listaImpactos
+        }
+      }
+
+      function inicializarVariablesMatrizRiesgo() {
+          return {
+            contadorSizeFila: 0,
+            registrosPorFila: [],
+            contadorImpacto: 0
+          }
       }
 
       export default TablaRiesgo;
