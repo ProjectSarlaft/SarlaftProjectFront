@@ -9,9 +9,16 @@ class HeaderInformacionMatrizRiesgo extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          listaProbabilidades: props.listaProbabilidades,
+          listaProbabilidades: [],
       }
   }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.listaProbabilidades !== this.props.listaProbabilidades) {
+        this.setState({listaProbabilidades : nextProps.listaProbabilidades});
+    }
+}
+
 
     render() {
       const {listaProbabilidades} = this.state;

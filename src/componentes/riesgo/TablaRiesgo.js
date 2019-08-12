@@ -12,7 +12,7 @@ import { Input } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import EventosTablaRiesgo from './EventosTablaRiesgo';
-import AlertaTablaRiesgo from './AlertaTablaRiesgo';
+import AlertaTablas from './../transversales/alerta/AlertaTablas';
 
 const opcionesRiesgoEscala = ['Muy Bajo', 'Bajo', 'Medio', 'Alto', 'Muy Alto'];
 const MAXIMA_CANTIDAD_FILAS_ESCALA_RIESGO = 5;
@@ -176,11 +176,11 @@ class TablaRiesgo extends Component {
       );
 
       const  alertaTablaRiesgo = (alerta, mensajeAlerta, handleClose) => (
-        <AlertaTablaRiesgo 
+        <AlertaTablas 
                  open={alerta} 
                  text={mensajeAlerta}
                  handleClose= {handleClose}
-         ></AlertaTablaRiesgo>
+         ></AlertaTablas>
        );
 
 

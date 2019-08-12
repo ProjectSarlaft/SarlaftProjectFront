@@ -9,7 +9,7 @@ import validacionTablaProbabilidad from '../../servicios/probabilidad/validacion
 import adicionarProbabilidadService from '../../servicios/probabilidad/adicionarProbabilidadService';
 import eliminarProbabilidadService from '../../servicios/probabilidad/eliminarProbabilidadService';
 import obtenerInformacionProbabilidadService from '../../servicios/probabilidad/obtenerInformacionProbabilidadService';
-import AlertaTablaProbabilidad from './AlertaTablaProbabilidad';
+import AlertaTablas from './../transversales/alerta/AlertaTablas';
 import HeaderTablaProbabilidad from './HeaderTablaProbabilidad';
 import EventosTablaProbabilidad from './EventosTablaProbabilidad';
 
@@ -28,6 +28,7 @@ class TablaImpactos extends Component {
        this.guardarInformacion = this.guardarInformacion.bind(this);
        this.actualizarInformacion = this.actualizarInformacion.bind(this);
        this.handleEvento = this.handleEvento.bind(this);
+       this.handleClose = this.handleClose.bind(this);
    }
 
 
@@ -124,12 +125,19 @@ class TablaImpactos extends Component {
      }
  }
 
+   handleClose(){
+      this.setState({ 
+        alerta: false,
+        mensajeAlerta: "",
+    });
+    }
+
    render() {
      const {informacion, alerta, mensajeAlerta} = this.state;
      return (
        <div>
          {botonAgregar(this.adicionarFila, this.guardarInformacion)} 
-         {validacionInfo(alerta, mensajeAlerta)}
+         {validacionInfo(alerta, mensajeAlerta, this.handleClose)}
          {crearHeader()}
          {strToComponents(informacion,this.actualizarInformacion, this.handleEvento)}
        </div>
@@ -148,11 +156,12 @@ class TablaImpactos extends Component {
        </Row>
      );
 
-     const  validacionInfo = (alerta, mensajeAlerta) => (
-          <AlertaTablaProbabilidad
+     const  validacionInfo = (alerta, mensajeAlerta, handleClose) => (
+          <AlertaTablas
                    open={alerta}
                    text={mensajeAlerta}
-           ></AlertaTablaProbabilidad>
+                   handleClose= {handleClose}
+           ></AlertaTablas>
      );
 
      

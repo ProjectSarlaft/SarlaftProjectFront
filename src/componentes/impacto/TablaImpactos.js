@@ -10,7 +10,7 @@ import validacionTablaImpacto from './../../servicios/impacto/validacionTablaImp
 import adicionarImpactoService from './../../servicios/impacto/adicionarImpactoService';
 import eliminarImpactoService from './../../servicios/impacto/eliminarImpactoService';
 import obtenerInformacionImpactoService from '../../servicios/impacto/obtenerInformacionImpactoService';
-import AlertaTablaImpacto from './AlertaTablaImpacto';
+import AlertaTablas from './../transversales/alerta/AlertaTablas';
 import HeadersTablaImpactos from './HeadersTablaImpactos';
 import EventosTablaImpacto from './EventosTablaImpacto';
 
@@ -29,6 +29,7 @@ class TablaImpactos extends Component {
         this.guardarInformacion = this.guardarInformacion.bind(this);
         this.actualizarInformacion = this.actualizarInformacion.bind(this);
         this.handleEvento = this.handleEvento.bind(this);
+        this.handleClose = this.handleClose.bind(this);
       }
 
       componentDidMount(){
@@ -122,6 +123,13 @@ class TablaImpactos extends Component {
         })
       }
   }
+  
+    handleClose(){
+      this.setState({ 
+        alerta: false,
+        mensajeAlerta: "",
+    });
+    }
 
     render() {
       const {informacion, alerta, mensajeAlerta} = this.state;
@@ -129,7 +137,7 @@ class TablaImpactos extends Component {
       return (
         <div>
           {botonAgregar(this.adicionarFila, this.guardarInformacion)}  
-          {validacionInfo(alerta, mensajeAlerta)}
+          {validacionInfo(alerta, mensajeAlerta, this.handleClose)}
           {crearHeaders()}
           {strToComponents(informacion,this.actualizarInformacion, this.handleEvento)}
         </div>
@@ -148,11 +156,12 @@ class TablaImpactos extends Component {
         </Row>
       );
 
-      const  validacionInfo = (alerta, mensajeAlerta) => (
-           <AlertaTablaImpacto 
-                    open={alerta} 
-                    text={mensajeAlerta}
-            ></AlertaTablaImpacto>
+      const  validacionInfo = (alerta, mensajeAlerta, handleClose) => (
+        <AlertaTablas
+          open={alerta}
+          text={mensajeAlerta}
+          handleClose= {handleClose}
+        ></AlertaTablas>
       );
 
       const  crearHeaders = () => (
