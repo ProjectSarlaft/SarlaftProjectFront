@@ -10,7 +10,7 @@ const obtenerInformacionEscalaRiesgo = () => {/*async () => {
             {
                 riesgoEscala:
                     {
-                        escala:"Bajo",
+                        escala:"Muy Bajo",
                         accion: "Nada",
                         color:"#8bc34a"
                     }
@@ -18,7 +18,7 @@ const obtenerInformacionEscalaRiesgo = () => {/*async () => {
             {        
                 riesgoEscala:
                         {
-                            escala:"Medio",
+                            escala:"Bajo",
                             accion: "Asaroso",
                             color:  "#ffeb3b"
                         }      
@@ -26,19 +26,11 @@ const obtenerInformacionEscalaRiesgo = () => {/*async () => {
             {
                 riesgoEscala:
                         {
-                            escala:"Alto",
+                            escala:"Medio",
                             accion: "Run",
                             color:"#ffc107"
                         }      
-            },
-            {
-                riesgoEscala:
-                    {
-                        escala:"Muy Alto",
-                        accion: "Acaboce",
-                        color:"#dd2c00"
-                    }    
-            }  
+            }
        ];
     };
 

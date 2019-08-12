@@ -11,6 +11,8 @@ import obtenerInformacionEscalaRiesgo from '../../servicios/riesgo/obtenerInform
 import { Input } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import EventosTablaRiesgo from './EventosTablaRiesgo';
+import AlertaTablaRiesgo from './AlertaTablaRiesgo';
 
 const opcionesRiesgoEscala = ['Muy Bajo', 'Bajo', 'Medio', 'Alto', 'Muy Alto'];
 const MAXIMA_CANTIDAD_FILAS_ESCALA_RIESGO = 5;
@@ -22,12 +24,16 @@ class TablaRiesgo extends Component {
         this.state = {
             informacionEscalaRiesgo: [],
             informacionMatrizRiesgo: [],
+            alerta: false,
+            mensajeAlerta: "",
         }
         
         this.actualizarInformacionEscalaRiesgos = this.actualizarInformacionEscalaRiesgos.bind(this);
         this.actualizarInformacionMatrizRiesgo = this.actualizarInformacionMatrizRiesgo.bind(this);
         this.adicionarFilaEscalaRiesgo = this.adicionarFilaEscalaRiesgo.bind(this);
         this.guardarInformacionEscalaRiesgo = this.guardarInformacionEscalaRiesgo.bind(this);
+        this.eliminarRiesgoEscalaHandler = this.eliminarRiesgoEscalaHandler.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount(){
@@ -59,7 +65,34 @@ class TablaRiesgo extends Component {
 
     guardarInformacionMatrizRiesgo() {
       //Todo implementaion
-  };
+    };
+
+    eliminarRiesgoEscalaHandler(event) {
+      var { informacionMatrizRiesgo, informacionEscalaRiesgo } = this.state;
+      var { value } = event.currentTarget;
+      const hayAlmenosUnRegistroEnMatrizRiesgo = informacionMatrizRiesgo.some((row) => row.riesgoEscala.escala === value);
+      
+      if (hayAlmenosUnRegistroEnMatrizRiesgo) {
+        this.setState({
+          alerta: true,
+          mensajeAlerta: "Por favor elimine todos los registro en la matriz de riesgo con el valor " + value,
+        })
+      } else {
+          if(informacionEscalaRiesgo.length > 3) {
+          // Eliminar registro back.
+          const matrizResultante = informacionEscalaRiesgo.filter((row) =>  row.riesgoEscala.escala !== value);
+          this.setState({
+            informacionEscalaRiesgo: matrizResultante,
+          });
+          } else {
+            this.setState({
+              alerta: true,
+              mensajeAlerta: "Recuerde que el minimo de filas permitidas son 3 ",
+            })
+          }
+        }
+    }
+    
 
     actualizarInformacionEscalaRiesgos(event) {
       var {id, name, value} = event.target;
@@ -77,8 +110,7 @@ class TablaRiesgo extends Component {
             return row;
           }
         });
-        const informacionMatrizRiesgo = prevState.informacionMatrizRiesgo.map((row) => {
-          debugger
+          const informacionMatrizRiesgo = prevState.informacionMatrizRiesgo.map((row) => {
           if(row.riesgoEscala[name] === valorOriginal) {
             row.riesgoEscala[name] = value;
           }
@@ -102,15 +134,23 @@ class TablaRiesgo extends Component {
     });
 };
 
+    handleClose(){
+      this.setState({ 
+        alerta: false,
+        mensajeAlerta: "",
+     });
+    }
+
     render() {
       const {informacionEscalaRiesgo , informacionMatrizRiesgo} = this.state;
         return (
           <div>
-              {botonAgregarYGuardarEscalaRiesgo(this.adicionarFilaEscalaRiesgo, this.guardarInformacion)} 
-              {crearHeaderEscalaRiesgo()}
-              {escribirInformacionEscalaRiesgo(informacionEscalaRiesgo, this.actualizarInformacionEscalaRiesgos, this.actualizarColorEscalaRiesgo)}
               {botonGuardarMatrizRiesgo(this.guardarInformacionMatrizRiesgo)}
               {crearMatrizRiesgo(informacionMatrizRiesgo, informacionEscalaRiesgo,this.actualizarInformacionMatrizRiesgo)}
+              {botonAgregarYGuardarEscalaRiesgo(this.adicionarFilaEscalaRiesgo, this.guardarInformacion)} 
+              {crearHeaderEscalaRiesgo()}
+              {escribirInformacionEscalaRiesgo(informacionEscalaRiesgo, this.actualizarInformacionEscalaRiesgos, this.eliminarRiesgoEscalaHandler)}
+              {alertaTablaRiesgo(this.state.alerta, this.state.mensajeAlerta, this.handleClose)}
           </div>
             );
         }
@@ -135,11 +175,20 @@ class TablaRiesgo extends Component {
         </Row>
       );
 
-      const escribirInformacionEscalaRiesgo = (informacion, actualizarInformacionHandler) => (
+      const  alertaTablaRiesgo = (alerta, mensajeAlerta, handleClose) => (
+        <AlertaTablaRiesgo 
+                 open={alerta} 
+                 text={mensajeAlerta}
+                 handleClose= {handleClose}
+         ></AlertaTablaRiesgo>
+       );
+
+
+      const escribirInformacionEscalaRiesgo = (informacion, actualizarInformacionHandler, eliminarRiesgoEscalaHandler) => (
         informacion.map( (row, index) => 
             (
             <Row>
-                <Col md={3} lg={3} >
+                <Col md={4} lg={4} >
                     <DatosEscalaRiesgo 
                         escala ={row.riesgoEscala.escala} 
                         accion = {row.riesgoEscala.accion} 
@@ -147,6 +196,13 @@ class TablaRiesgo extends Component {
                         onChangeRow = {actualizarInformacionHandler}
                         id = {index}
                         key = {index}/>
+                </Col>
+                <Col md={1} lg={1}>
+                    <EventosTablaRiesgo
+                        eliminarRiesgoEscalaHandler = {eliminarRiesgoEscalaHandler}
+                        id = {index}
+                        value = {row.riesgoEscala.escala}>                    
+                    </EventosTablaRiesgo>
                 </Col>
           </Row>)
     ));

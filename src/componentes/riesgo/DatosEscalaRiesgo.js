@@ -68,7 +68,8 @@ class DatosImpacto extends Component {
                   id = {"4"}
                   value= {this.state.escala||''}
                   style={{
-                    backgroundColor: this.state.color
+                    backgroundColor: this.state.color,
+                    width: "100%"
                   }}
                   onChange={onChangeRow}
                   input={<Input name="color" value ={this.state.escala||''} id = {id+""} />}
