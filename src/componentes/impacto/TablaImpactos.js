@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaImpacto from './../../servicios/impacto/validacionTablaImpacto';
 import adicionarImpactoService from './../../servicios/impacto/adicionarImpactoService';
+import editarImpactoService from './../../servicios/impacto/editarImpactoService';
 import eliminarImpactoService from './../../servicios/impacto/eliminarImpactoService';
 import obtenerInformacionImpactoService from '../../servicios/impacto/obtenerInformacionImpactoService';
 import AlertaTablas from './../transversales/alerta/AlertaTablas';
@@ -19,6 +20,7 @@ class TablaImpactos extends Component {
        debugger
         super(props);
         this.state = {
+            informacionInicialBack :[],
             informacion: [],
             indice: 0,
             alerta: false,
@@ -36,6 +38,7 @@ class TablaImpactos extends Component {
         obtenerInformacionImpactoService().then(response => 
           this.setState(
             {
+              informacionInicialBack: response,
               informacion: response,
               indice: response.length,
             }));
@@ -98,10 +101,45 @@ class TablaImpactos extends Component {
                 mensajeAlerta: mensajeAlerta,
               })
         } else { 
-          console.log(JSON.stringify(informacion));
+          this.guardarInfoBackEnd(informacion);
           informacion.map(fila => adicionarImpactoService(fila))
         }
     };
+
+    guardarInfoBackEnd = function(informacion) {
+      const listaIdIniciales = this.state.informacionInicialBack.map(dato => dato.id);
+      var guardadoExitoso = true;
+      const informacionNueva = informacion.filter(datoActual => !listaIdIniciales.includes(datoActual.id));
+      const informacionEditada = informacion.filter(datoActual => listaIdIniciales.includes(datoActual.id));
+
+      informacionNueva.map(fila => adicionarImpactoService(fila)
+        .then(res => {
+          if(res.status >= 400) {
+            guardadoExitoso = false;
+            this.setState({
+              alerta: true,
+              mensajeAlerta: "El proceso de guardado no ha finalizado adecuadamente",
+            })
+          }}));
+
+      informacionEditada.map(fila => editarImpactoService(fila)
+        .then(res => {
+          if(res.status >= 400) {
+            guardadoExitoso = false;
+            this.setState({
+              alerta: true,
+              mensajeAlerta: "El proceso de guardado no ha finalizado adecuadamente",
+            })
+          }}));
+
+          if(guardadoExitoso = false) {
+            this.setState({
+              alerta: true,
+              mensajeAlerta: "El proceso de guardado ha finalizado adecuadamente",
+            })
+          }
+
+    } 
 
     actualizarInformacion(event) {
       debugger
