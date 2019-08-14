@@ -51,6 +51,11 @@ class TablaImpactos extends Component {
                 informacion: this.state.informacion.concat(crearFilaTablaImpacto),
                 indice:  indice +1,
               }); 
+        } else {
+          this.setState({
+            alerta: true,
+            mensajeAlerta: "No es posible insertar mas de 5 filas",
+          })
         }
     };
 
@@ -60,7 +65,7 @@ class TablaImpactos extends Component {
       const indiceFila = event.target.id;
       if (tipoEvento === "delete") {
         if (indice > 3) {
-          eliminarImpactoService(informacion[indiceFila].escala)
+          eliminarImpactoService(informacion[indiceFila].id)
             .then(res => {
               if(res.status < 400) {
               informacion.splice(indiceFila,1);
@@ -102,13 +107,12 @@ class TablaImpactos extends Component {
               })
         } else { 
           this.guardarInfoBackEnd(informacion);
-          informacion.map(fila => adicionarImpactoService(fila))
         }
     };
 
     guardarInfoBackEnd = function(informacion) {
-      const listaIdIniciales = this.state.informacionInicialBack.map(dato => dato.id);
       var guardadoExitoso = true;
+      const listaIdIniciales = this.state.informacionInicialBack.map(dato => dato.id).filter(dato => dato !== undefined);
       const informacionNueva = informacion.filter(datoActual => !listaIdIniciales.includes(datoActual.id));
       const informacionEditada = informacion.filter(datoActual => listaIdIniciales.includes(datoActual.id));
 
@@ -116,15 +120,21 @@ class TablaImpactos extends Component {
         .then(res => {
           if(res.status >= 400) {
             guardadoExitoso = false;
+            console.log(res);
             this.setState({
               alerta: true,
               mensajeAlerta: "El proceso de guardado no ha finalizado adecuadamente",
             })
-          }}));
+          } 
+        }));
 
-      informacionEditada.map(fila => editarImpactoService(fila)
+      informacionEditada
+        .filter(info => info.hasOwnProperty('id'))
+        .filter(info => info.id !== undefined)
+        .map(fila => editarImpactoService(fila)
         .then(res => {
           if(res.status >= 400) {
+            console.log(res);
             guardadoExitoso = false;
             this.setState({
               alerta: true,
@@ -132,17 +142,22 @@ class TablaImpactos extends Component {
             })
           }}));
 
-          if(guardadoExitoso = false) {
-            this.setState({
+
+      debugger;
+      if(guardadoExitoso) {
+        obtenerInformacionImpactoService().then(response => 
+          this.setState(
+            {
+              informacionInicialBack: response,
+              informacion: response,
+              indice: response.length,
               alerta: true,
               mensajeAlerta: "El proceso de guardado ha finalizado adecuadamente",
-            })
-          }
-
+            }));
+      }
     } 
 
     actualizarInformacion(event) {
-      debugger
       const {id, name, value, checked} = event.target;
       const finalValue = value === "" ? checked : value; // Si el value es "" quiere decir que se actualizo un checkbox, por lo tanto retornaremos el checkbox.
       this.setState(prevState => {
@@ -217,7 +232,7 @@ class TablaImpactos extends Component {
                         afectacionEconomica = {row.afectacionEconomica}
                         onChangeRow = {actualizarInformacionHandler}
                         id = {index}
-                        key = {index}/>
+                        key = {row.id}/>
                 </Col>
                 <Col md={6} lg={6} >
                     <RiesgosAsociados

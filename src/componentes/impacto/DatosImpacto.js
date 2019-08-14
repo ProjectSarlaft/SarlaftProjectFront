@@ -12,11 +12,16 @@ class DatosImpacto extends Component {
             afectacionEconomica: props.afectacionEconomica,
             onChangeRow: props.onChangeRow,
             id: props.id,
+            key: props.key,
         }
     }
 
     componentWillReceiveProps(nextProps) {
       debugger
+      if(nextProps.key !== this.props.key) {
+        this.setState({key : nextProps.key});
+      }
+
       if(nextProps.escala !== this.props.escala) {
           this.setState({escala : nextProps.escala});
       }
