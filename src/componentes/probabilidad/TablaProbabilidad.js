@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaProbabilidad from '../../servicios/probabilidad/validacionTablaProbabilidad';
 import adicionarProbabilidadService from '../../servicios/probabilidad/adicionarProbabilidadService';
+import editarProbabilidadService from '../../servicios/probabilidad/editarProbabilidadService';
 import eliminarProbabilidadService from '../../servicios/probabilidad/eliminarProbabilidadService';
 import obtenerInformacionProbabilidadService from '../../servicios/probabilidad/obtenerInformacionProbabilidadService';
 import AlertaTablas from './../transversales/alerta/AlertaTablas';
@@ -18,6 +19,7 @@ class TablaImpactos extends Component {
       debugger
        super(props);
        this.state = {
+           informacionInicialBack: [],
            informacion: [],
            indice: 0,
            alerta: false,
@@ -35,7 +37,8 @@ class TablaImpactos extends Component {
    componentDidMount(){
     obtenerInformacionProbabilidadService().then(response => 
       this.setState(
-        {
+        { 
+          informacionInicialBack: response,
           informacion: response,
           indice: response.length,
         }));
@@ -99,10 +102,54 @@ class TablaImpactos extends Component {
                mensajeAlerta: mensajeAlerta,
              })
        } else {
-        console.log(JSON.stringify(informacion));
-        informacion.forEach((filas) => adicionarProbabilidadService(filas));
+        this.guardarInfoBackEnd(informacion);
        }
    };
+
+   guardarInfoBackEnd = function(informacion) {
+    var guardadoExitoso = true;
+    const listaIdIniciales = this.state.informacionInicialBack.map(dato => dato.id).filter(dato => dato !== undefined);
+    const informacionNueva = informacion.filter(datoActual => !listaIdIniciales.includes(datoActual.id));
+    const informacionEditada = informacion.filter(datoActual => listaIdIniciales.includes(datoActual.id));
+
+    informacionNueva.map(fila => adicionarProbabilidadService(fila)
+      .then(res => {
+        if(res.status >= 400) {
+          guardadoExitoso = false;
+          this.setState({
+            alerta: true,
+            mensajeAlerta: "El proceso de guardado no ha finalizado adecuadamente",
+          })
+        } 
+      }));
+
+    informacionEditada
+      .filter(info => info.hasOwnProperty('id'))
+      .filter(info => info.id !== undefined)
+      .map(fila => editarProbabilidadService(fila)
+      .then(res => {
+        if(res.status >= 400) {
+          guardadoExitoso = false;
+          this.setState({
+            alerta: true,
+            mensajeAlerta: "El proceso de guardado no ha finalizado adecuadamente",
+          })
+        }}));
+
+
+    debugger;
+    if(guardadoExitoso) {
+      obtenerInformacionProbabilidadService().then(response => 
+        this.setState(
+          {
+            informacionInicialBack: response,
+            informacion: response,
+            indice: response.length,
+            alerta: true,
+            mensajeAlerta: "El proceso de guardado ha finalizado adecuadamente",
+          }));
+    }
+  } 
 
    actualizarInformacion(event) {
      debugger
