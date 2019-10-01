@@ -6,55 +6,45 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-class AlertaTablaImpacto extends React.Component {
+class AlertaTablas extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: this.props.open,
-            text: this.props.text,
+            open: props.open,
+            text: props.text,
+            handleClose: props.handleClose,
         }
     }
 
-componentWillReceiveProps(nextProps) {
-    this.setState({
-        open: nextProps.open,
-        text: nextProps.text,
-    });
-    }  
+    componentWillReceiveProps(nextProps) {
+    
+      if(nextProps.open !== this.props.open) {
+          this.setState({open : nextProps.open});
+      }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.text === "") {
-        return false
-    } else {
-        return true;
-    }
-  }
-
-  handleClose = () => {
-    this.setState({ 
-        open: false,
-        text: "",
-     });
-  };
+      if(nextProps.text !== this.props.text) {
+          this.setState({text : nextProps.text});
+      }
+  } 
 
   render() {
-    const { text, open} = this.state; 
+    const { text, open, handleClose} = this.state; 
     return (
         <div>
            <Dialog
           open={open}
-          onClose={this.handleClose}
+          onClose={handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Campos Requeridos"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Alerta!"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
                 {text}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={handleClose} color="primary">
               Acepto
             </Button>
           </DialogActions>
@@ -64,4 +54,4 @@ componentWillReceiveProps(nextProps) {
   }
 }
 
-export default AlertaTablaImpacto;
+export default AlertaTablas;

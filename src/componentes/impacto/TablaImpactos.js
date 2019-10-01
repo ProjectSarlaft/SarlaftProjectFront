@@ -8,9 +8,10 @@ import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaImpacto from './../../servicios/impacto/validacionTablaImpacto';
 import adicionarImpactoService from './../../servicios/impacto/adicionarImpactoService';
+import editarImpactoService from './../../servicios/impacto/editarImpactoService';
 import eliminarImpactoService from './../../servicios/impacto/eliminarImpactoService';
 import obtenerInformacionImpactoService from '../../servicios/impacto/obtenerInformacionImpactoService';
-import AlertaTablaImpacto from './AlertaTablaImpacto';
+import AlertaTablas from './../transversales/alerta/AlertaTablas';
 import HeadersTablaImpactos from './HeadersTablaImpactos';
 import EventosTablaImpacto from './EventosTablaImpacto';
 
@@ -19,6 +20,7 @@ class TablaImpactos extends Component {
        debugger
         super(props);
         this.state = {
+            informacionInicialBack :[],
             informacion: [],
             indice: 0,
             alerta: false,
@@ -29,12 +31,14 @@ class TablaImpactos extends Component {
         this.guardarInformacion = this.guardarInformacion.bind(this);
         this.actualizarInformacion = this.actualizarInformacion.bind(this);
         this.handleEvento = this.handleEvento.bind(this);
+        this.handleClose = this.handleClose.bind(this);
       }
 
       componentDidMount(){
         obtenerInformacionImpactoService().then(response => 
           this.setState(
             {
+              informacionInicialBack: response,
               informacion: response,
               indice: response.length,
             }));
@@ -47,6 +51,11 @@ class TablaImpactos extends Component {
                 informacion: this.state.informacion.concat(crearFilaTablaImpacto),
                 indice:  indice +1,
               }); 
+        } else {
+          this.setState({
+            alerta: true,
+            mensajeAlerta: "No es posible insertar mas de 5 filas",
+          })
         }
     };
 
@@ -54,14 +63,24 @@ class TablaImpactos extends Component {
       const {informacion, indice} = this.state;
       const tipoEvento = event.target.name;
       const indiceFila = event.target.id;
-      debugger
       if (tipoEvento === "delete") {
-        eliminarImpactoService(informacion[indiceFila].escala);
         if (indice > 3) {
-          informacion.splice(indiceFila,1);
-          this.setState({
-            informacion: informacion,
-            indice:  this.state.indice - 1,
+          eliminarImpactoService(informacion[indiceFila].id)
+            .then(res => {
+              if(res.status < 400) {
+              informacion.splice(indiceFila,1);
+              this.setState({
+                informacion: informacion,
+                indice:  this.state.indice - 1,
+                alerta: true,
+                mensajeAlerta: "La fila ha sido eliminada correctamente",
+          })}
+              else {
+                this.setState({
+                  alerta: true,
+                  mensajeAlerta: "La fila no ha sido eliminada correctamente",
+                })
+              }
           });
         } else {
           this.setState({
@@ -87,13 +106,58 @@ class TablaImpactos extends Component {
                 mensajeAlerta: mensajeAlerta,
               })
         } else { 
-          console.log(JSON.stringify(informacion));
-          informacion.map(fila => adicionarImpactoService(fila))
+          this.guardarInfoBackEnd(informacion);
         }
     };
 
+    guardarInfoBackEnd = function(informacion) {
+      var guardadoExitoso = true;
+      const listaIdIniciales = this.state.informacionInicialBack.map(dato => dato.id).filter(dato => dato !== undefined);
+      const informacionNueva = informacion.filter(datoActual => !listaIdIniciales.includes(datoActual.id));
+      const informacionEditada = informacion.filter(datoActual => listaIdIniciales.includes(datoActual.id));
+
+      informacionNueva.map(fila => adicionarImpactoService(fila)
+        .then(res => {
+          if(res.status >= 400) {
+            guardadoExitoso = false;
+            console.log(res);
+            this.setState({
+              alerta: true,
+              mensajeAlerta: "El proceso de guardado no ha finalizado adecuadamente",
+            })
+          } 
+        }));
+
+      informacionEditada
+        .filter(info => info.hasOwnProperty('id'))
+        .filter(info => info.id !== undefined)
+        .map(fila => editarImpactoService(fila)
+        .then(res => {
+          if(res.status >= 400) {
+            console.log(res);
+            guardadoExitoso = false;
+            this.setState({
+              alerta: true,
+              mensajeAlerta: "El proceso de guardado no ha finalizado adecuadamente",
+            })
+          }}));
+
+
+      debugger;
+      if(guardadoExitoso) {
+        obtenerInformacionImpactoService().then(response => 
+          this.setState(
+            {
+              informacionInicialBack: response,
+              informacion: response,
+              indice: response.length,
+              alerta: true,
+              mensajeAlerta: "El proceso de guardado ha finalizado adecuadamente",
+            }));
+      }
+    } 
+
     actualizarInformacion(event) {
-      debugger
       const {id, name, value, checked} = event.target;
       const finalValue = value === "" ? checked : value; // Si el value es "" quiere decir que se actualizo un checkbox, por lo tanto retornaremos el checkbox.
       this.setState(prevState => {
@@ -112,6 +176,13 @@ class TablaImpactos extends Component {
         })
       }
   }
+  
+    handleClose(){
+      this.setState({ 
+        alerta: false,
+        mensajeAlerta: "",
+    });
+    }
 
     render() {
       const {informacion, alerta, mensajeAlerta} = this.state;
@@ -119,7 +190,7 @@ class TablaImpactos extends Component {
       return (
         <div>
           {botonAgregar(this.adicionarFila, this.guardarInformacion)}  
-          {validacionInfo(alerta, mensajeAlerta)}
+          {validacionInfo(alerta, mensajeAlerta, this.handleClose)}
           {crearHeaders()}
           {strToComponents(informacion,this.actualizarInformacion, this.handleEvento)}
         </div>
@@ -138,11 +209,12 @@ class TablaImpactos extends Component {
         </Row>
       );
 
-      const  validacionInfo = (alerta, mensajeAlerta) => (
-           <AlertaTablaImpacto 
-                    open={alerta} 
-                    text={mensajeAlerta}
-            ></AlertaTablaImpacto>
+      const  validacionInfo = (alerta, mensajeAlerta, handleClose) => (
+        <AlertaTablas
+          open={alerta}
+          text={mensajeAlerta}
+          handleClose= {handleClose}
+        ></AlertaTablas>
       );
 
       const  crearHeaders = () => (
@@ -160,7 +232,7 @@ class TablaImpactos extends Component {
                         afectacionEconomica = {row.afectacionEconomica}
                         onChangeRow = {actualizarInformacionHandler}
                         id = {index}
-                        key = {index}/>
+                        key = {row.id}/>
                 </Col>
                 <Col md={6} lg={6} >
                     <RiesgosAsociados

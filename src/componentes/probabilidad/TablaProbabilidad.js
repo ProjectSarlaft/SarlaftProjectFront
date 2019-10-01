@@ -7,9 +7,10 @@ import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import validacionTablaProbabilidad from '../../servicios/probabilidad/validacionTablaProbabilidad';
 import adicionarProbabilidadService from '../../servicios/probabilidad/adicionarProbabilidadService';
+import editarProbabilidadService from '../../servicios/probabilidad/editarProbabilidadService';
 import eliminarProbabilidadService from '../../servicios/probabilidad/eliminarProbabilidadService';
 import obtenerInformacionProbabilidadService from '../../servicios/probabilidad/obtenerInformacionProbabilidadService';
-import AlertaTablaProbabilidad from './AlertaTablaProbabilidad';
+import AlertaTablas from './../transversales/alerta/AlertaTablas';
 import HeaderTablaProbabilidad from './HeaderTablaProbabilidad';
 import EventosTablaProbabilidad from './EventosTablaProbabilidad';
 
@@ -18,6 +19,7 @@ class TablaImpactos extends Component {
       debugger
        super(props);
        this.state = {
+           informacionInicialBack: [],
            informacion: [],
            indice: 0,
            alerta: false,
@@ -28,13 +30,15 @@ class TablaImpactos extends Component {
        this.guardarInformacion = this.guardarInformacion.bind(this);
        this.actualizarInformacion = this.actualizarInformacion.bind(this);
        this.handleEvento = this.handleEvento.bind(this);
+       this.handleClose = this.handleClose.bind(this);
    }
 
 
    componentDidMount(){
     obtenerInformacionProbabilidadService().then(response => 
       this.setState(
-        {
+        { 
+          informacionInicialBack: response,
           informacion: response,
           indice: response.length,
         }));
@@ -46,13 +50,24 @@ class TablaImpactos extends Component {
     const indiceFila = event.target.id;
     debugger
     if (tipoEvento === "delete") {
-      eliminarProbabilidadService(informacion[indiceFila].escala);
       if (indice > 3) {
-        informacion.splice(indiceFila,1);
-        this.setState({
-          informacion: informacion,
-          indice:  this.state.indice - 1,
-        });
+        eliminarProbabilidadService(informacion[indiceFila].escala)
+          .then(res => {
+            if(res.status < 400) {
+              informacion.splice(indiceFila,1);
+              this.setState({
+                informacion: informacion,
+                indice:  this.state.indice - 1,
+                alerta: true,
+                mensajeAlerta: "La fila ha sido eliminada correctamente",
+              });
+            } else {
+              this.setState({
+                alerta: true,
+                mensajeAlerta: "La fila no ha sido eliminada correctamente",
+              })
+            }
+          });
       } else {
         this.setState({
           alerta: true,
@@ -87,10 +102,54 @@ class TablaImpactos extends Component {
                mensajeAlerta: mensajeAlerta,
              })
        } else {
-        console.log(JSON.stringify(informacion));
-        informacion.forEach((filas) => adicionarProbabilidadService(filas));
+        this.guardarInfoBackEnd(informacion);
        }
    };
+
+   guardarInfoBackEnd = function(informacion) {
+    var guardadoExitoso = true;
+    const listaIdIniciales = this.state.informacionInicialBack.map(dato => dato.id).filter(dato => dato !== undefined);
+    const informacionNueva = informacion.filter(datoActual => !listaIdIniciales.includes(datoActual.id));
+    const informacionEditada = informacion.filter(datoActual => listaIdIniciales.includes(datoActual.id));
+
+    informacionNueva.map(fila => adicionarProbabilidadService(fila)
+      .then(res => {
+        if(res.status >= 400) {
+          guardadoExitoso = false;
+          this.setState({
+            alerta: true,
+            mensajeAlerta: "El proceso de guardado no ha finalizado adecuadamente",
+          })
+        } 
+      }));
+
+    informacionEditada
+      .filter(info => info.hasOwnProperty('id'))
+      .filter(info => info.id !== undefined)
+      .map(fila => editarProbabilidadService(fila)
+      .then(res => {
+        if(res.status >= 400) {
+          guardadoExitoso = false;
+          this.setState({
+            alerta: true,
+            mensajeAlerta: "El proceso de guardado no ha finalizado adecuadamente",
+          })
+        }}));
+
+
+    debugger;
+    if(guardadoExitoso) {
+      obtenerInformacionProbabilidadService().then(response => 
+        this.setState(
+          {
+            informacionInicialBack: response,
+            informacion: response,
+            indice: response.length,
+            alerta: true,
+            mensajeAlerta: "El proceso de guardado ha finalizado adecuadamente",
+          }));
+    }
+  } 
 
    actualizarInformacion(event) {
      debugger
@@ -113,12 +172,19 @@ class TablaImpactos extends Component {
      }
  }
 
+   handleClose(){
+      this.setState({ 
+        alerta: false,
+        mensajeAlerta: "",
+    });
+    }
+
    render() {
      const {informacion, alerta, mensajeAlerta} = this.state;
      return (
        <div>
          {botonAgregar(this.adicionarFila, this.guardarInformacion)} 
-         {validacionInfo(alerta, mensajeAlerta)}
+         {validacionInfo(alerta, mensajeAlerta, this.handleClose)}
          {crearHeader()}
          {strToComponents(informacion,this.actualizarInformacion, this.handleEvento)}
        </div>
@@ -137,11 +203,12 @@ class TablaImpactos extends Component {
        </Row>
      );
 
-     const  validacionInfo = (alerta, mensajeAlerta) => (
-          <AlertaTablaProbabilidad
+     const  validacionInfo = (alerta, mensajeAlerta, handleClose) => (
+          <AlertaTablas
                    open={alerta}
                    text={mensajeAlerta}
-           ></AlertaTablaProbabilidad>
+                   handleClose= {handleClose}
+           ></AlertaTablas>
      );
 
      

@@ -15,7 +15,6 @@ class DatosImpacto extends Component {
             accion: this.props.accion,
             color: this.props.color,
             onChangeRow: props.onChangeRow,
-            onChangeColor: props.onChangeColor,
             id: props.id,
         }
     }
@@ -37,7 +36,7 @@ class DatosImpacto extends Component {
 
     render() {
       const isReadOnly = false;
-      const { id, onChangeRow, onChangeColor } = this.state;
+      const { id, onChangeRow } = this.state;
       debugger
       return (
         <div>
@@ -49,7 +48,7 @@ class DatosImpacto extends Component {
                     id = {id+""}
                     value={this.state.escala||''}
                     onChange={onChangeRow}
-                    readOnly={isReadOnly}>
+                    readOnly={true}>
                   </Input>
                 </Col>
                 <Col md={6} lg={6} >
@@ -69,7 +68,8 @@ class DatosImpacto extends Component {
                   id = {"4"}
                   value= {this.state.escala||''}
                   style={{
-                    backgroundColor: this.state.color
+                    backgroundColor: this.state.color,
+                    width: "100%"
                   }}
                   onChange={onChangeRow}
                   input={<Input name="color" value ={this.state.escala||''} id = {id+""} />}

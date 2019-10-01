@@ -7,10 +7,10 @@ class RiesgosAsociados extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            riesgoLegal: "",
-            riesgoOperativo: "",
-            riesgoContagio: "",
-            riesgoReputacional: "",
+            riesgoLegal: props.riesgoLegal,
+            riesgoOperativo: props.riesgoOperativo,
+            riesgoContagio: props.riesgoContagio,
+            riesgoReputacional: props.riesgoReputacional,
             isReadOnly: props.isReadOnly,
             onChangeRow: props.onChangeRow,
             id: props.id,
@@ -19,7 +19,6 @@ class RiesgosAsociados extends Component {
 
     
     componentWillReceiveProps(nextProps) {
-    
       if(nextProps.riesgoLegal !== this.props.riesgoLegal) {
           this.setState({riesgoLegal : nextProps.riesgoLegal});
       }
