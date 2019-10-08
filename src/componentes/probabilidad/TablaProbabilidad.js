@@ -45,12 +45,12 @@ class TablaImpactos extends Component {
 }
 
    handleEvento(event) {
-    const {informacion, indice} = this.state;
+    const {informacion, indice, informacionInicialBack } = this.state;
     const tipoEvento = event.target.name;
     const indiceFila = event.target.id;
     debugger
     if (tipoEvento === "delete") {
-      if (indice > 3) {
+      if (indice > 3 && informacionInicialBack.length > 3) {
         eliminarProbabilidadService(informacion[indiceFila].escala)
           .then(res => {
             if(res.status < 400) {
@@ -137,7 +137,6 @@ class TablaImpactos extends Component {
         }}));
 
 
-    debugger;
     if(guardadoExitoso) {
       obtenerInformacionProbabilidadService().then(response => 
         this.setState(

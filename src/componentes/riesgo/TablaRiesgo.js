@@ -37,9 +37,8 @@ class TablaRiesgo extends Component {
     }
 
     componentDidMount(){
-        //obtenerInformacionEscalaRiesgo().then(response => this.setState({informacionEscalaRiesgo: response}))
-        this.setState({informacionEscalaRiesgo: obtenerInformacionEscalaRiesgo()});
         obtenerInformacionMatrizRiesgo().then(response => this.setState({informacionMatrizRiesgo: response}));
+        obtenerInformacionEscalaRiesgo().then(response => this.setState({informacionEscalaRiesgo: response}));
     }
 
     
@@ -50,7 +49,7 @@ class TablaRiesgo extends Component {
               informacionEscalaRiesgo: this.state.informacionEscalaRiesgo.concat(
                 {riesgoEscala:
                   {
-                    escala:opcionesRiesgoEscala[informacionEscalaRiesgo.length],
+                    escala:[informacionEscalaRiesgo.length],
                     accion: STRING_VACIO,
                     color:  STRING_VACIO
                   }
@@ -99,8 +98,9 @@ class TablaRiesgo extends Component {
       if (id === undefined) {
         id = event.currentTarget.id;
       }
-      const valorOriginal = this.state.informacionEscalaRiesgo[id].riesgoEscala[name];
-      if(!this.state.informacionEscalaRiesgo.some((row) => row.riesgoEscala.color === value)) // Verificar que el color no este seleccionado
+      debugger
+      const valorOriginal = this.state.informacionEscalaRiesgo[id].color;
+      if(!this.state.informacionEscalaRiesgo.some((riesgoEscala) => riesgoEscala.color === value)) // Verificar que el color no este seleccionado
       this.setState(prevState => {
         const informacionEscalaRiesgo = prevState.informacionEscalaRiesgo.map((row, j) => {
           if(j + STRING_VACIO === id) {
@@ -185,14 +185,14 @@ class TablaRiesgo extends Component {
 
 
       const escribirInformacionEscalaRiesgo = (informacion, actualizarInformacionHandler, eliminarRiesgoEscalaHandler) => (
-        informacion.map( (row, index) => 
+        informacion.map((riesgoEscala, index) => 
             (
             <Row>
                 <Col md={4} lg={4} >
                     <DatosEscalaRiesgo 
-                        escala ={row.riesgoEscala.escala} 
-                        accion = {row.riesgoEscala.accion} 
-                        color = {row.riesgoEscala.color}
+                        escala ={riesgoEscala.escala} 
+                        color = {riesgoEscala.color}
+                        colores = {informacion}
                         onChangeRow = {actualizarInformacionHandler}
                         id = {index}
                         key = {index}/>
@@ -201,7 +201,7 @@ class TablaRiesgo extends Component {
                     <EventosTablaRiesgo
                         eliminarRiesgoEscalaHandler = {eliminarRiesgoEscalaHandler}
                         id = {index}
-                        value = {row.riesgoEscala.escala}>                    
+                        value = {riesgoEscala.escala}>                    
                     </EventosTablaRiesgo>
                 </Col>
           </Row>)
@@ -224,8 +224,9 @@ class TablaRiesgo extends Component {
 
       function crearRow(informacionMatrizRiesgo,informacionEscalaRiesgo,actualizarInformacionMatrizRiesgo) {
         var fila = []
+        debugger
         informacionMatrizRiesgo.map((value) => {
-          if(value.hasOwnProperty('escalaImpacto') && value.hasOwnProperty('escalaProbabilidad')) {
+          if(value.hasOwnProperty('impacto') && value.hasOwnProperty('probabilidad')) {
             fila.push(
               <Col lg={2} md={2}>
                 <Select
@@ -240,14 +241,14 @@ class TablaRiesgo extends Component {
                   onChange={actualizarInformacionMatrizRiesgo}
                   input={<Input name="escala" value={value.riesgoEscala.escala||''}  id={value.escalaImpacto + value.escalaProbabilidad}/>}
                   > 
-                  {informacionEscalaRiesgo.map((valoresRiesgoEscala)=> {
+                  {informacionEscalaRiesgo.map((riesgoEscala)=> {
                     return (
                       <MenuItem 
-                        value={valoresRiesgoEscala.riesgoEscala.color} 
+                        value={riesgoEscala.color} 
                         id = {value.escalaImpacto + value.escalaProbabilidad} 
                         style={{
-                        backgroundColor: valoresRiesgoEscala.riesgoEscala.color
-                        }}>{valoresRiesgoEscala.riesgoEscala.escala}
+                        backgroundColor: riesgoEscala.color
+                        }}>{riesgoEscala.escala}
                       </MenuItem>);
                   })};   
                   </Select> 
@@ -273,6 +274,7 @@ class TablaRiesgo extends Component {
 
       function crearInformacionMatrizRiesgo(informationMatrizRiesgo, listaProbabilidades, listaImpactos, informacionEscalaRiesgo, actualizarInformacionMatrizRiesgo, matrizRiesgo) {
         var { contadorSizeFila, registrosPorFila, contadorImpacto } = inicializarVariablesMatrizRiesgo()
+        debugger
         for(var value of informationMatrizRiesgo) {
           if(contadorSizeFila < (listaProbabilidades.length -1)) {
             registrosPorFila.push(value);
@@ -293,16 +295,15 @@ class TablaRiesgo extends Component {
      }
 
       function obtenerListaDeProbabilidadesEImpactos(informationMatrizRiesgo) {
-
         const listaImpactos = informationMatrizRiesgo
                                 .reduce(function(acc, value) {
-                                    if(!acc.some(x => value.escalaImpacto === x.riesgoEscala.escala) && (value !== undefined ))
-                                      acc.push(crearObjetoRiesgoEscala(value.escalaImpacto));return acc}, []);
-
+                                    if(!acc.some(x => value.impacto.escala === x.riesgoEscala.escala) && (value !== undefined ))
+                                      acc.push(crearObjetoRiesgoEscala(value.impacto.escala));return acc}, []);
+        
         const listaProbabilidades = informationMatrizRiesgo
                                 .reduce(function(acc, value) {
-                                    if(!acc.some(x => value.escalaProbabilidad === x.riesgoEscala.escala) && (value !== undefined ))
-                                      acc.push(crearObjetoRiesgoEscala(value.escalaProbabilidad)); return acc}, []);
+                                    if(!acc.some(x => value.probabilidad.escala === x.riesgoEscala.escala) && (value !== undefined ))
+                                      acc.push((crearObjetoRiesgoEscala(value.probabilidad.escala))); return acc}, []);
 
         // Adionando campo vacio en la matriz                              
         listaProbabilidades.unshift(crearObjetoRiesgoEscala(STRING_VACIO));
@@ -320,5 +321,12 @@ class TablaRiesgo extends Component {
             contadorImpacto: 0
           }
       }
+
+      function riesgoEscalaGroupingByColores(infoRiesgoEscala) {
+        const riesgoEscalaBycolores = infoRiesgoEscala.reduce(function(acc, value){
+          if(!acc.some(x => value.color === x.color)) acc.push(value); return acc}, []);
+          return riesgoEscalaBycolores;
+        }
+        
 
       export default TablaRiesgo;

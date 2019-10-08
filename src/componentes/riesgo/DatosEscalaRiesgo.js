@@ -5,7 +5,6 @@ import { Input } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const colores = ["#8bc34a", "#cddc39", "#ffc107", "#dd2c00", "#212121"];
 
 class DatosImpacto extends Component {
     constructor(props) {
@@ -14,6 +13,7 @@ class DatosImpacto extends Component {
             escala: this.props.escala,
             accion: this.props.accion,
             color: this.props.color,
+            colores: this.props.colores,
             onChangeRow: props.onChangeRow,
             id: props.id,
         }
@@ -36,7 +36,7 @@ class DatosImpacto extends Component {
 
     render() {
       const isReadOnly = false;
-      const { id, onChangeRow } = this.state;
+      const { colores, id, onChangeRow } = this.state;
       debugger
       return (
         <div>
@@ -74,14 +74,14 @@ class DatosImpacto extends Component {
                   onChange={onChangeRow}
                   input={<Input name="color" value ={this.state.escala||''} id = {id+""} />}
                 >
-                {colores.map((color)=> {
+                {this.state.colores.map((color)=> {
                   return (
                     <MenuItem 
-                      value={color} 
+                      value={color.color} 
                       name = "color"
                       id = {id}
                       style={{
-                       backgroundColor: color
+                       backgroundColor: color.color
                       }}>
                     </MenuItem>);
                 })};   
