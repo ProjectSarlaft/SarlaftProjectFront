@@ -32,6 +32,10 @@ class DatosImpacto extends Component {
       if(nextProps.color !== this.props.color) {
           this.setState({color : nextProps.color});
       }
+
+      if(nextProps.colores !== this.props.colores) {
+        this.setState({colores : nextProps.colores});
+    }
   } 
 
     render() {

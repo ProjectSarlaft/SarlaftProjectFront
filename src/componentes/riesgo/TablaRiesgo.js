@@ -8,6 +8,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import HeaderEscalaRiesgo from './HeaderEscalaRiesgo';
 import obtenerInformacionMatrizRiesgo from '../../servicios/riesgo/obtenerInformacionMatrizRiesgo';
 import obtenerInformacionEscalaRiesgo from '../../servicios/riesgo/obtenerInformacionEscalaRiesgo';
+import eliminarRiesgoEscalaService from '../../servicios/riesgo/eliminarRiesgoEscalaService';
 import { Input } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -68,6 +69,7 @@ class TablaRiesgo extends Component {
 
     eliminarRiesgoEscalaHandler(event) {
       var { informacionMatrizRiesgo, informacionEscalaRiesgo } = this.state;
+      debugger
       var { value } = event.currentTarget;
       const hayAlmenosUnRegistroEnMatrizRiesgo = informacionMatrizRiesgo.some((row) => row.riesgoEscala.escala === value);
       
@@ -78,11 +80,23 @@ class TablaRiesgo extends Component {
         })
       } else {
           if(informacionEscalaRiesgo.length > 3) {
-          // Eliminar registro back.
-          const matrizResultante = informacionEscalaRiesgo.filter((row) =>  row.riesgoEscala.escala !== value);
-          this.setState({
-            informacionEscalaRiesgo: matrizResultante,
-          });
+          const obtenerIdentificaroRiesgoEscala = informacionEscalaRiesgo.filter((escalaRiesgo) =>  escalaRiesgo.escala === value).map((riesgoEscala) => riesgoEscala.color); 
+          eliminarRiesgoEscalaService(obtenerIdentificaroRiesgoEscala)
+            .then(res => {
+              if(res.status<400) {
+                const matrizResultanteRiesgoEscala = informacionEscalaRiesgo.filter((escalaRiesgo) =>  escalaRiesgo.escala !== value);
+                this.setState({
+                  informacionEscalaRiesgo: matrizResultanteRiesgoEscala,
+                  alerta: true,
+                  mensajeAlerta: "La fila de riesgo escala ha sido eliminada correctamente",
+                });
+              } else {
+                this.setState({
+                  alerta: true,
+                  mensajeAlerta: "La fila de riesgo escala no ha sido eliminada correctamente",
+                })
+              }
+            });
           } else {
             this.setState({
               alerta: true,
@@ -121,12 +135,13 @@ class TablaRiesgo extends Component {
   };
 
   actualizarInformacionMatrizRiesgo(event) {
+    debugger
     const {name, value} = event.target;
-    const escalaRiesgo = this.state.informacionEscalaRiesgo.filter((escalaRiesgoRegistro) => value === escalaRiesgoRegistro.riesgoEscala.color);
+    const escalaRiesgo = this.state.informacionEscalaRiesgo.filter((escalaRiesgoRegistro) => value === escalaRiesgoRegistro.color);
     this.setState(prevState => {
       const informacionMatrizRiesgo = prevState.informacionMatrizRiesgo.map((row) => {
-        if(name === row.escalaImpacto+row.escalaProbabilidad) {
-          row.riesgoEscala = escalaRiesgo[0].riesgoEscala;
+        if(name === row.riesgoId) {
+          row.riesgoEscala = escalaRiesgo[0];
         }
         return row;
       })
@@ -230,22 +245,22 @@ class TablaRiesgo extends Component {
             fila.push(
               <Col lg={2} md={2}>
                 <Select
-                  name = {value.escalaImpacto + value.escalaProbabilidad}
-                  key = {value.escalaImpacto + value.escalaProbabilidad} 
-                  id = {value.escalaImpacto + value.escalaProbabilidad} 
+                  name = {value.riesgoId}
+                  key = {value.riesgoId} 
+                  id = {value.riesgoId} 
                   style={{
                     backgroundColor: value.riesgoEscala.color,
                     width: "100%"
                   }}
                   renderValue = {() => value.riesgoEscala.escala||''}
                   onChange={actualizarInformacionMatrizRiesgo}
-                  input={<Input name="escala" value={value.riesgoEscala.escala||''}  id={value.escalaImpacto + value.escalaProbabilidad}/>}
+                  input={<Input name="escala" value={value.riesgoEscala.escala||''}  id={value.id}/>}
                   > 
                   {informacionEscalaRiesgo.map((riesgoEscala)=> {
                     return (
                       <MenuItem 
-                        value={riesgoEscala.color} 
-                        id = {value.escalaImpacto + value.escalaProbabilidad} 
+                        value={riesgoEscala.color}
+                        name = {value.riesgoId}  
                         style={{
                         backgroundColor: riesgoEscala.color
                         }}>{riesgoEscala.escala}

@@ -15,6 +15,12 @@ class EventosTablaImpacto extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+      if(nextProps.value !== this.props.value) {
+          this.setState({value : nextProps.value});
+      }
+  }
+
     render() {
         const { id, eliminarRiesgoEscalaHandler, value } = this.state;
         debugger
