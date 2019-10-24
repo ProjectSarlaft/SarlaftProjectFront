@@ -109,26 +109,25 @@ class TablaRiesgo extends Component {
 
     actualizarInformacionEscalaRiesgos(event) {
       var {id, name, value} = event.target;
-      if (id === undefined) {
-        id = event.currentTarget.id;
-      }
       debugger
-      const valorOriginal = this.state.informacionEscalaRiesgo[id].color;
-      if(!this.state.informacionEscalaRiesgo.some((riesgoEscala) => riesgoEscala.color === value)) // Verificar que el color no este seleccionado
+      const valorOriginal = this.state.informacionEscalaRiesgo
+                              .filter((riesgoEscala) => riesgoEscala.color === id)
+                              .map((riesgoEscala) => riesgoEscala[name]);
       this.setState(prevState => {
-        const informacionEscalaRiesgo = prevState.informacionEscalaRiesgo.map((row, j) => {
-          if(j + STRING_VACIO === id) {
-            row.riesgoEscala[name] = value;
-            return row;
+        const informacionEscalaRiesgo = prevState.informacionEscalaRiesgo.map((riesgoEscala) => {
+          if(riesgoEscala.color === id) {
+            riesgoEscala[name] = value;
+            return riesgoEscala;
           } else {
-            return row;
+            return riesgoEscala;
           }
         });
-          const informacionMatrizRiesgo = prevState.informacionMatrizRiesgo.map((row) => {
-          if(row.riesgoEscala[name] === valorOriginal) {
-            row.riesgoEscala[name] = value;
+
+        const informacionMatrizRiesgo = prevState.informacionMatrizRiesgo.map((riesgo) => {
+          if(riesgo.riesgoEscala.color === id) {
+            riesgo.riesgoEscala[name] = value;
           }
-          return row;
+          return riesgo;
         })
         return {informacionEscalaRiesgo, informacionMatrizRiesgo}
       });
@@ -207,15 +206,16 @@ class TablaRiesgo extends Component {
                     <DatosEscalaRiesgo 
                         escala ={riesgoEscala.escala} 
                         color = {riesgoEscala.color}
+                        accion = {riesgoEscala.accion}
                         colores = {informacion}
                         onChangeRow = {actualizarInformacionHandler}
-                        id = {index}
+                        id = {riesgoEscala.color}
                         key = {index}/>
                 </Col>
                 <Col md={1} lg={1}>
                     <EventosTablaRiesgo
                         eliminarRiesgoEscalaHandler = {eliminarRiesgoEscalaHandler}
-                        id = {index}
+                        id = {riesgoEscala.color}
                         value = {riesgoEscala.escala}>                    
                     </EventosTablaRiesgo>
                 </Col>
