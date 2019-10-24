@@ -15,7 +15,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import EventosTablaRiesgo from './EventosTablaRiesgo';
 import AlertaTablas from './../transversales/alerta/AlertaTablas';
 
-const opcionesRiesgoEscala = ['Muy Bajo', 'Bajo', 'Medio', 'Alto', 'Muy Alto'];
 const MAXIMA_CANTIDAD_FILAS_ESCALA_RIESGO = 5;
 const STRING_VACIO = "";
 
@@ -69,7 +68,6 @@ class TablaRiesgo extends Component {
 
     eliminarRiesgoEscalaHandler(event) {
       var { informacionMatrizRiesgo, informacionEscalaRiesgo } = this.state;
-      debugger
       var { value } = event.currentTarget;
       const hayAlmenosUnRegistroEnMatrizRiesgo = informacionMatrizRiesgo.some((row) => row.riesgoEscala.escala === value);
       
@@ -109,10 +107,9 @@ class TablaRiesgo extends Component {
 
     actualizarInformacionEscalaRiesgos(event) {
       var {id, name, value} = event.target;
-      debugger
-      const valorOriginal = this.state.informacionEscalaRiesgo
-                              .filter((riesgoEscala) => riesgoEscala.color === id)
-                              .map((riesgoEscala) => riesgoEscala[name]);
+      if (id === undefined) {	
+        id = event.currentTarget.id;	
+      }
       this.setState(prevState => {
         const informacionEscalaRiesgo = prevState.informacionEscalaRiesgo.map((riesgoEscala) => {
           if(riesgoEscala.color === id) {
@@ -207,7 +204,7 @@ class TablaRiesgo extends Component {
                         escala ={riesgoEscala.escala} 
                         color = {riesgoEscala.color}
                         accion = {riesgoEscala.accion}
-                        colores = {informacion}
+                        informacion = {informacion}
                         onChangeRow = {actualizarInformacionHandler}
                         id = {riesgoEscala.color}
                         key = {index}/>

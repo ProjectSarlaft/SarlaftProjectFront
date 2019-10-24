@@ -5,8 +5,8 @@ import { Input } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const coloresDisponibles = ['#2196f3', '#76ff03','#ffeb3b','#ff9800','#f44336'];
-
+const opcionesColores = ['#2196f3', '#76ff03','#ffeb3b','#ff9800','#f44336'];
+const opcionesRiesgoEscala = ['Muy Bajo', 'Bajo', 'Medio', 'Alto', 'Muy Alto'];
 
 class DatosImpacto extends Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class DatosImpacto extends Component {
             escala: this.props.escala,
             accion: this.props.accion,
             color: this.props.color,
-            coloresActuales: this.props.colores,
+            informacion: this.props.informacion,
             onChangeRow: props.onChangeRow,
             id: props.id,
         }
@@ -36,27 +36,43 @@ class DatosImpacto extends Component {
           this.setState({color : nextProps.color});
       }
 
-      if(nextProps.colores !== this.props.colores) {
-        this.setState({colores : nextProps.colores});
+      if(nextProps.informacion.length !== this.props.informacion.length) {
+        this.setState({informacion : nextProps.informacion});
     }
   } 
 
     render() {
+      debugger
       const isReadOnly = false;
-      const { coloresActuales, id, onChangeRow } = this.state;
-      
+      const { informacion, id, onChangeRow } = this.state;
+      const { coloresSinUsar, escalasSinUsar } = encontrarElementosSinUsar(informacion);
+      debugger
       return (
         <div>
             <Row>
                 <Col md={3} lg={3} >
-                  <Input
+                  <Select
                     name = "escala"
                     key = {id + "escala"}
-                    id = {id+""}
-                    value={this.state.escala||''}
+                    id = {id}
+                    value = { this.state.escala||''}
+                    renderValue = {() => this.state.escala||''}
+                    style={{
+                      width: "100%"
+                    }}
                     onChange={onChangeRow}
-                    readOnly={true}>
-                  </Input>
+                    input={<Input name="escala" value ={this.state.escala||''} id = {id+""} />}
+                  >
+                  { 
+                  escalasSinUsar.map((escala)=> {
+                    return (
+                      <MenuItem 
+                        value={escala} 
+                        name = "escala"
+                        id = {id}> {escala}
+                      </MenuItem>);
+                  })};   
+                  </Select>
                 </Col>
                 <Col md={6} lg={6} >
                   <Input
@@ -72,7 +88,7 @@ class DatosImpacto extends Component {
                 <Select
                   name = "color"
                   key = {id + "color"}
-                  id = {"4"}
+                  id = {id+""}
                   value= {this.state.escala||''}
                   style={{
                     backgroundColor: this.state.color,
@@ -81,14 +97,15 @@ class DatosImpacto extends Component {
                   onChange={onChangeRow}
                   input={<Input name="color" value ={this.state.escala||''} id = {id+""} />}
                 >
-                {this.state.coloresActuales.map((color)=> {
+                { 
+                coloresSinUsar.map((color)=> {
                   return (
                     <MenuItem 
-                      value={color.color} 
+                      value={color} 
                       name = "color"
                       id = {id}
                       style={{
-                       backgroundColor: color.color
+                       backgroundColor: color
                       }}>
                     </MenuItem>);
                 })};   
@@ -99,4 +116,15 @@ class DatosImpacto extends Component {
           );
         }
       }
+
+      function encontrarElementosSinUsar(informacion) {
+        const coloresSinUsar = opcionesColores.filter(color => !informacion.some(riesgoEscala => riesgoEscala.color == color));
+        const escalasSinUsar = opcionesRiesgoEscala.filter(escala => !informacion.some(riesgoEscala => riesgoEscala.escala == escala));
+
+        return {
+          coloresSinUsar: coloresSinUsar,
+          escalasSinUsar: escalasSinUsar
+        };
+      }
+
       export default DatosImpacto;
