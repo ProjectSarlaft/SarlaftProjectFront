@@ -51,7 +51,7 @@ class TablaImpactos extends Component {
     debugger
     if (tipoEvento === "delete") {
       if (indice > 3 && informacionInicialBack.length > 3) {
-        eliminarProbabilidadService(informacion[indiceFila].escala)
+        eliminarProbabilidadService(informacion[indiceFila].id)
           .then(res => {
             if(res.status < 400) {
               informacion.splice(indiceFila,1);

@@ -8,7 +8,7 @@ class HeaderTablaProbabilidad extends Component {
       return (
         <div>
             <Row >
-                <Col md={4} lg={4} >
+                <Col md={5} lg={5} >
                   <HeaderEscalaRiesgo></HeaderEscalaRiesgo>
                 </Col>
             </Row>

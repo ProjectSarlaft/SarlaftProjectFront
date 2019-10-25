@@ -4,9 +4,7 @@ import './../../App.css'
 import { Input } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-
-const opcionesColores = ['#2196f3', '#76ff03','#ffeb3b','#ff9800','#f44336'];
-const opcionesRiesgoEscala = ['Muy Bajo', 'Bajo', 'Medio', 'Alto', 'Muy Alto'];
+import encontrarElementosSinUsar from '../../servicios/riesgo/encontrarElementosSinUsar';
 
 class DatosImpacto extends Component {
     constructor(props) {
@@ -81,7 +79,10 @@ class DatosImpacto extends Component {
                     id = {id+""}
                     value={this.state.accion||''}
                     onChange={onChangeRow}
-                    readOnly={isReadOnly}>
+                    readOnly={isReadOnly}
+                    style={{
+                      width: "100%"
+                    }}>
                   </Input>
                 </Col>
                 <Col md={3} lg={3} >
@@ -115,16 +116,6 @@ class DatosImpacto extends Component {
         </div>
           );
         }
-      }
-
-      function encontrarElementosSinUsar(informacion) {
-        const coloresSinUsar = opcionesColores.filter(color => !informacion.some(riesgoEscala => riesgoEscala.color == color));
-        const escalasSinUsar = opcionesRiesgoEscala.filter(escala => !informacion.some(riesgoEscala => riesgoEscala.escala == escala));
-
-        return {
-          coloresSinUsar: coloresSinUsar,
-          escalasSinUsar: escalasSinUsar
-        };
       }
 
       export default DatosImpacto;

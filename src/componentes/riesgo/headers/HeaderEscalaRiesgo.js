@@ -20,7 +20,10 @@ class HeaderEscalaRiesgo extends Component {
               <Input
                 name = "accion"
                 value="Accion"
-                readOnly={isReadOnly}>
+                readOnly={isReadOnly}
+                style={{
+                  width: "100%"
+                }}>
               </Input>
             </Col>
             <Col md={3} lg={3} >

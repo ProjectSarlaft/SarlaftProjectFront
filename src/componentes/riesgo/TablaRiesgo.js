@@ -9,6 +9,8 @@ import HeaderEscalaRiesgo from './HeaderEscalaRiesgo';
 import obtenerInformacionMatrizRiesgo from '../../servicios/riesgo/obtenerInformacionMatrizRiesgo';
 import obtenerInformacionEscalaRiesgo from '../../servicios/riesgo/obtenerInformacionEscalaRiesgo';
 import eliminarRiesgoEscalaService from '../../servicios/riesgo/eliminarRiesgoEscalaService';
+import encontrarElementosSinUsar from '../../servicios/riesgo/encontrarElementosSinUsar';
+import crearRiesgoEscalaService from '../../servicios/riesgo/crearRiesgoEscalaService';
 import { Input } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -43,18 +45,17 @@ class TablaRiesgo extends Component {
 
     
    adicionarFilaEscalaRiesgo() {
+     debugger
       const {informacionEscalaRiesgo} = this.state;
+      const { coloresSinUsar } = encontrarElementosSinUsar(informacionEscalaRiesgo);
       if (informacionEscalaRiesgo.length < MAXIMA_CANTIDAD_FILAS_ESCALA_RIESGO) {
-          this.setState({
-              informacionEscalaRiesgo: this.state.informacionEscalaRiesgo.concat(
-                {riesgoEscala:
-                  {
-                    escala:[informacionEscalaRiesgo.length],
-                    accion: STRING_VACIO,
-                    color:  STRING_VACIO
-                  }
-                }),
+        const nuevoElementoRiesgoEscala ={ escala: "", accion: "", color:  coloresSinUsar[0]};
+        crearRiesgoEscalaService(nuevoElementoRiesgoEscala).then(res => {
+          if(res.status < 400) {
+            this.setState({
+              informacionEscalaRiesgo: this.state.informacionEscalaRiesgo.concat(nuevoElementoRiesgoEscala)
             });
+        }});
       }
     };
 
@@ -106,6 +107,7 @@ class TablaRiesgo extends Component {
     
 
     actualizarInformacionEscalaRiesgos(event) {
+      debugger
       var {id, name, value} = event.target;
       if (id === undefined) {	
         id = event.currentTarget.id;	
@@ -131,7 +133,6 @@ class TablaRiesgo extends Component {
   };
 
   actualizarInformacionMatrizRiesgo(event) {
-    debugger
     const {name, value} = event.target;
     const escalaRiesgo = this.state.informacionEscalaRiesgo.filter((escalaRiesgoRegistro) => value === escalaRiesgoRegistro.color);
     this.setState(prevState => {
@@ -199,7 +200,7 @@ class TablaRiesgo extends Component {
         informacion.map((riesgoEscala, index) => 
             (
             <Row>
-                <Col md={4} lg={4} >
+                <Col md={5} lg={5} >
                     <DatosEscalaRiesgo 
                         escala ={riesgoEscala.escala} 
                         color = {riesgoEscala.color}
@@ -339,6 +340,5 @@ class TablaRiesgo extends Component {
           if(!acc.some(x => value.color === x.color)) acc.push(value); return acc}, []);
           return riesgoEscalaBycolores;
         }
-        
 
       export default TablaRiesgo;
