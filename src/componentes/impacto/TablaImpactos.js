@@ -41,6 +41,9 @@ class TablaImpactos extends Component {
               informacionInicialBack: response,
               informacion: response,
               indice: response.length,
+              alerta: true,
+              mensajeAlerta: "Recuerde que cada actualizacion realizada " +
+                              " sobre los campos de Impacto impactará la matriz de Riesgo"
             }));
     }
 
